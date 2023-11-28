@@ -1,5 +1,6 @@
 import csv 
 import requests
+import classes as cs
 
 token ="BQBG2l8LzaeYo_LVDNtyuVwxEG4ECp80Jgr-909Ve1J7qYjYIjqCaJV-RIC2x0PkCGtr93r0SFYo4gJ6mymKJ8JgNU4_XNU9borq39_e-pvwwDM5Lzw"
 
