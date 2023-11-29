@@ -93,7 +93,6 @@ graph = Graph()
 graph.addEdge('Taylor Swift','artist','Country','genre')
 graph.addEdge('Taylor Swift','artist','Pop','genre')
 
-print(graph)
 # rock.addNeighbor(country)
 # print(rock.neighbors)
 # print(rock.degree)
