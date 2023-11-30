@@ -31,9 +31,14 @@ def parse_playlist(api_output):
 #https://enterprise.wikimedia.com/docs/on-demand/#article-lookup
 
 wikimedia_token ="eyJraWQiOiJzeVNnS1JaZWdwcDFlSGZEYnlsR2YrTnBjVmVXUDZJNGJlSFpOWjBDZVdrPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIxNGQ2MGMxOC04MGQ2LTQ5NzAtYTA4Mi0yYTY4MTRkMzFjZDkiLCJjb2duaXRvOmdyb3VwcyI6WyJncm91cF8xIl0sImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy1lYXN0LTEuYW1hem9uYXdzLmNvbVwvdXMtZWFzdC0xX0tiNW5ZZDN6dSIsImNsaWVudF9pZCI6IjY0MXU0aTdncHR1ZmZzc2w0bTlvYXR2NHU5Iiwib3JpZ2luX2p0aSI6Ijc2MDk2MDI2LWM0NzgtNDljNy1iNDdmLTA5ZGVmOWViZjAzZCIsImV2ZW50X2lkIjoiNWQyOTdlYTMtZWNmOC00YWY0LTg5ZTUtMTAwNjQyOGQ3NmVjIiwidG9rZW5fdXNlIjoiYWNjZXNzIiwic2NvcGUiOiJhd3MuY29nbml0by5zaWduaW4udXNlci5hZG1pbiIsImF1dGhfdGltZSI6MTcwMTI4NDIzNywiZXhwIjoxNzAxMzcwNjM3LCJpYXQiOjE3MDEyODQyMzcsImp0aSI6ImMzYjUzOTg0LWY2OGMtNDI4Ny04ZThjLTZkYzgzODhiOTg2ZiIsInVzZXJuYW1lIjoic2t5ZWxlcmJlYXIifQ.Gr5qgDJK0RKQHQuJXfyZG0GJUz69UDAw_d0Yk1M_LbW5OFvwgUW-brsngF_QL8-clzW_hjwweGRueN5rQyL2yEEXWDKfnZfRA9NjRn3xqOSLgd2cKrYO-Ta6oP1bLZJ8sW3jJ6HNxhz9EKkVDG813n2T63PBN712144FYUFJHNTL_hhqU77Azltr5dmF-QtU-1VqrKCw7FMhpR9Y7l5vaooRafyrlonVhXloBr7BwZZcQdTxTQ7FjgZuQutWSh6FZFWlYQLOljEAwB_S0iS2eE2Hmd2mzvSDHQV2AdPLtbns-4e5mBY4OjyRa0vF2fUTe26E3-ktTRhvPTyNweapEg"
-
 wiki_headers = {"Authorization": f'Bearer {wikimedia_token}'}
 
+def wikimedia_request(wikimedia_token,artist):
+        wiki_headers = {"Authorization": f'Bearer {wikimedia_token}'}
+        artist_new = artist.replace(' ',"_")
+        return requests.get(f'https://api.enterprise.wikimedia.com/v2/structured-contents/{artist_new}?fields=in_language&fields=infobox',headers=wiki_headers)
+
+print(wikimedia_request(wikimedia_token,'Taylor Swift').json())
 
 wiki_test=requests.get('https://api.enterprise.wikimedia.com/v2/structured-contents/Ella_Fitzgerald?fields=in_language&fields=infobox',headers=wiki_headers)
 
