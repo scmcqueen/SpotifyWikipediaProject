@@ -42,9 +42,26 @@ wiki_two=requests.get('https://api.enterprise.wikimedia.com/v2/structured-conten
 
 # print(wiki_test.json())
 
+artists_full_info = {}
 
+def parse_wikimedia_request(name, wiki_result, artists_full_info):
+    '''
 
-def parse_wikimedia_request(wiki_result):
+    PARAMETERS
+    ----------
+    name: str
+      The name of the artist that was searched
+    wiki_result: request
+      This is
+    artists_full_info: dict
+      The dictionary of artists where the key is their name (string) and the value
+      is a dictionary with information about them. 
+
+    RETURNS
+    ----------
+    None
+      The function adds a new element to the input artists_full_info
+    '''
 
     temp_json = wiki_result.json()
     english_info=None
@@ -53,12 +70,6 @@ def parse_wikimedia_request(wiki_result):
         if 'in_language' in temp_json[num].keys():
             if temp_json[num]['in_language']['identifier']=='en':
                 english_info = temp_json[num]['infobox']
-
-    #print(len(english_info[0]['has_parts'][0]['has_parts']))
-    #print(english_info[0]['has_parts'][0]['has_parts'][9]) #Birth place
-    #print(english_info[0]['has_parts'][0]['has_parts'][2]['value'].lower().split(" ")) #occupations 
-    #print(english_info[0]['has_parts'][0]['has_parts'][9]['value'].lower().split(" ")) #instruments
-
     birth = None
     died = None
     occupation = []
@@ -85,9 +96,13 @@ def parse_wikimedia_request(wiki_result):
                 instruments = item['value'].lower().split(" ")
         except:
             pass
-    print(birth,died,occupation,instruments)
-# info_box_info = wiki_test.json()[0]['infobox'][0]
-parse_wikimedia_request(wiki_test)
-parse_wikimedia_request(wiki_two)
+    artists_full_info[name]={'birth':birth,
+                             'died': died,
+                             'instruments': instruments,
+                             'occupations': occupation}
+parse_wikimedia_request('Ella Fitzgerald', wiki_test, artists_full_info)
+parse_wikimedia_request('Selena Gomez', wiki_two,artists_full_info)
+
+print(artists_full_info.keys())
 
 #born = info_box_info['Born']
