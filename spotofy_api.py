@@ -2,6 +2,47 @@ import csv
 import requests
 import wikipediaapi
 import classes as cs
+import json
+
+############# Cache info ############# 
+
+def open_cache(CACHE_FILENAME):
+    ''' This function opens the cache json if it exists and loads
+    it into a dictionary. If it doesn't exist, then this function
+    creates a new cache dictionary.
+    Parameters
+    ----------
+    CACHE_FILENAME: str
+        The name of the cache file 
+    Returns
+    ----------
+    The opened cache
+    '''
+    try:
+        cache_file = open(CACHE_FILENAME, 'r')
+        cache_contents = cache_file.read()
+        cache_dict = json.loads(cache_contents)
+        cache_file.close()
+    except:
+        cache_dict = {}
+    return cache_dict
+
+def save_cache(cache_dict,CACHE_FILENAME):
+    ''' saves the current state of the cache
+    Parameters
+    ----------
+    CACHE_FILENAME: str
+        The name of the cache file 
+    cache_dict: dict
+        The dictionary to save
+    Returns
+    -------
+    None
+    '''
+    dumped_json_cache = json.dumps(cache_dict)
+    fw = open(CACHE_FILENAME,"w")
+    fw.write(dumped_json_cache)
+    fw.close() 
 
 
 def parse_playlist(api_output):
@@ -35,7 +76,7 @@ def get_artist_genres(link,headers):
 
 
 
-#############Now I'm looking at wikipedia###################
+############# Now I'm looking at wikipedia ###################
 #https://enterprise.wikimedia.com/docs/on-demand/#article-lookup
 
 
@@ -119,6 +160,9 @@ def main():
 
     headers={"Authorization": f"Bearer {token}"}
 
+    CACHE_FILENAME = "spotify_wikipedia.json" #step 7
+
+
     top100 = requests.get("https://api.spotify.com/v1/playlists/0Hm1tCeFv45CJkNeIAtrfF/tracks",headers=headers)
 
     parsed_100 = parse_playlist(top100)
@@ -133,7 +177,8 @@ def main():
         more_deets = get_artist_genres(parsed_100[celeb]['api_link'],headers)
         for item in more_deets.keys():
             parsed_100[celeb][item]=more_deets[item]
-    print(parsed_100['Rema'].keys())
+    print(parsed_100['Rema'])
+
 
 if __name__ == '__main__':
     main()
