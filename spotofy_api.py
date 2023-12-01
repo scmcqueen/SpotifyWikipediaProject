@@ -24,10 +24,13 @@ print("-------------------------------------------------------------------------
 
 def get_artist_genres(link,headers):
    info = requests.get(link,headers=headers).json()
-   print(info)
+   #print(info)
    genres = info['genres']
    img_info = info['images']
    popularity = info['popularity']
+   return {'genres':genres,
+           'img_info':img_info,
+           'popularity':popularity}
 
 
 
@@ -126,9 +129,11 @@ def main():
     wikimedia_token ="eyJraWQiOiJzeVNnS1JaZWdwcDFlSGZEYnlsR2YrTnBjVmVXUDZJNGJlSFpOWjBDZVdrPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIxNGQ2MGMxOC04MGQ2LTQ5NzAtYTA4Mi0yYTY4MTRkMzFjZDkiLCJjb2duaXRvOmdyb3VwcyI6WyJncm91cF8xIl0sImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy1lYXN0LTEuYW1hem9uYXdzLmNvbVwvdXMtZWFzdC0xX0tiNW5ZZDN6dSIsImNsaWVudF9pZCI6IjY0MXU0aTdncHR1ZmZzc2w0bTlvYXR2NHU5Iiwib3JpZ2luX2p0aSI6ImQyOTI2MDU3LWI3MjYtNGZkMC05MWMwLTk1NjgyN2U4YzEyYSIsImV2ZW50X2lkIjoiMDMyM2JjMzAtZDg1YS00NjE3LThhMTktMTdhZjRmZDhmYTAxIiwidG9rZW5fdXNlIjoiYWNjZXNzIiwic2NvcGUiOiJhd3MuY29nbml0by5zaWduaW4udXNlci5hZG1pbiIsImF1dGhfdGltZSI6MTcwMTQ2NDcyNiwiZXhwIjoxNzAxNTUxMTI2LCJpYXQiOjE3MDE0NjQ3MjYsImp0aSI6ImM5OThkZWI3LTdmZTMtNGY1OC1hMjg1LWMyZWVmMDMzNDUyNCIsInVzZXJuYW1lIjoic2t5ZWxlcmJlYXIifQ.dStqBiuARmLYz_k6tEpbOnjenjQevBsZXo_EcQdgubDLTSkmHIzVZNP_EzHGT4uj6AkkVYiXFdZjTt5fHWiZTVB0ufGR3JndBwb3D5n62j8blwZoE5FNI8gFz9Aio0c4TUqwoEoDXjPRiXIVeGH0LimNkH3nrS_qQsLya_zJ3e8E2A6-3VVoSummjVZhDw99a5swqzQR-SIGig3e1RU4sKB8v7ThUMDAiT5wlXUgia5LI-Cx6HWaQ5zxZI0VF0kiIY_iNwK9QGeqybKcPkez0e7qvsDMkh4SDsEb_ZkoO1kRKbhAjGoWwodfix45hi-GYnBSr0lfEesvz5wKx-X6EA"
     wiki_headers = {"Authorization": f'Bearer {wikimedia_token}'}
 
-    
-
-    pass
+    for celeb in parsed_100.keys():
+        more_deets = get_artist_genres(parsed_100[celeb]['api_link'],headers)
+        for item in more_deets.keys():
+            parsed_100[celeb][item]=more_deets[item]
+    print(parsed_100['Rema'].keys())
 
 if __name__ == '__main__':
     main()
