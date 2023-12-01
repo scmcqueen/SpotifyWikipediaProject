@@ -162,6 +162,7 @@ def main():
 
     CACHE_FILENAME = "spotify_wikipedia.json" #step 7
 
+    spotify_cache = open_cache(CACHE_FILENAME)
 
     top100 = requests.get("https://api.spotify.com/v1/playlists/0Hm1tCeFv45CJkNeIAtrfF/tracks",headers=headers)
 
@@ -174,11 +175,14 @@ def main():
     wiki_headers = {"Authorization": f'Bearer {wikimedia_token}'}
 
     for celeb in parsed_100.keys():
-        more_deets = get_artist_genres(parsed_100[celeb]['api_link'],headers)
-        for item in more_deets.keys():
-            parsed_100[celeb][item]=more_deets[item]
+        if celeb not in spotify_cache.keys():
+            more_deets = get_artist_genres(parsed_100[celeb]['api_link'],headers)
+            for item in more_deets.keys():
+                parsed_100[celeb][item]=more_deets[item]
+            spotify_cache[celeb]=parsed_100[celeb][item]
     print(parsed_100['Rema'])
 
+    
 
 if __name__ == '__main__':
     main()
