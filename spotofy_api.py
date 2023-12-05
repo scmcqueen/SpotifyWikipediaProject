@@ -218,7 +218,7 @@ def createMyGraph():
     print(f"The number of vertices is: {len(mygraph.vertList)}!")
     return(mygraph)
 
-if __name__ == '__main__':
+#if __name__ == '__main__':
     #main()
     # test = {'Skyeler': {'id':'teehee','api_link':'boring,','genres':['pov indie','video game music'],'img_info':'too pretty','popularity':0,'birth':'Royal Oak Michigan June 30,1999','died':'alive','instruments':['vocalish'],'occupations':['depressed','student','crafty girl']},
     #         'Samuel': {'id':'toho','api_link':'boring,','genres':['pov indie','musical theater'],'img_info':'too handsome','popularity':100,'birth':'Baltimore Maryland June 30,1999','died':'alive','instruments':['vocals','piano','guitar'],'occupations':['depressed','software engineer','adult lego masters fan']}}
