@@ -86,13 +86,6 @@ def wikimedia_request(wikimedia_token,artist):
         artist_new = artist.replace(' ',"_")
         return requests.get(f'https://api.enterprise.wikimedia.com/v2/structured-contents/{artist_new}?fields=in_language&fields=infobox',headers=wiki_headers)
 
-#wiki_test=requests.get('https://api.enterprise.wikimedia.com/v2/structured-contents/Ella_Fitzgerald?fields=in_language&fields=infobox',headers=wiki_headers)
-
-#wiki_two=requests.get('https://api.enterprise.wikimedia.com/v2/structured-contents/Selena_Gomez?fields=in_language&fields=infobox',headers=wiki_headers)
-
-# print(wiki_test.json())
-
-artists_full_info = {}
 
 def parse_wikimedia_request(name, wiki_result, artists_full_info):
     '''
@@ -159,11 +152,6 @@ def parse_wikimedia_request(name, wiki_result, artists_full_info):
                                 # 'died': died,
                                 # 'instruments': instruments,
                                 # 'occupations': occupation}
-# parse_wikimedia_request('Ella Fitzgerald', wiki_test, artists_full_info)
-# parse_wikimedia_request('Selena Gomez', wiki_two,artists_full_info)
-
-
-#born = info_box_info['Born']
 
 def createMyGraph():
     token ="BQBDhUnf-pBCr5Qiuhij08_X4HTZnKCx2bwyMaZIBGUNqH0F4VkBe-_u_NZD3n9m9HhzQhza4Es46jMa5LaggY-mltfXhuNQekwCpVroHwsiMyqsMVw"
@@ -200,27 +188,30 @@ def createMyGraph():
             parsed_100[celeb] = spotify_cache[celeb]
     save_cache(spotify_cache,CACHE_FILENAME)
     
-    mygraph = cs.Graph()
+    mygraph = nx.Graph()
 
     for artist in parsed_100:
-        mygraph.addVertex(artist)
+        parsed_100[artist]['type']='artist'
 
-        mygraph.vertList[artist].deathDate = parsed_100[artist]['died']
-        mygraph.vertList[artist].birthDate = parsed_100[artist]['birth']
-        mygraph.vertList[artist].occupations = parsed_100[artist]['occupations']
-        mygraph.vertList[artist].instruments = parsed_100[artist]['instruments']
-        mygraph.vertList[artist].popularity= parsed_100[artist]['popularity']
-        mygraph.vertList[artist].image_info = parsed_100[artist]['img_info']
+        mygraph.add_nodes_from([(artist,parsed_100[artist])])
+
 
         for gen in parsed_100[artist]['genres']:
-            mygraph.addEdge(gen,'genre',artist,'artist')
-    print(mygraph)
-    print("---------------")
-    print(f"The number of vertices is: {len(mygraph.vertList)}!")
+            mygraph.add_nodes_from([(gen,{'type':'genre'})])
+            mygraph.add_edge(artist,gen)
+    # print(mygraph)
+    # print("---------------")
+    print(f'Nodes: {str(len(list(mygraph.nodes)))}')
+    # print(list(mygraph.nodes))
+    # print("---------------")
+    print(f'Edges: {str(len(list(mygraph.edges)))}')
+    # #print(f"The number of vertices is: {len(mygraph.vertList)}!")
+    # print("---------------")
+    # print(mygraph.nodes['Katy Perry'])
     return(mygraph)
 
-#if __name__ == '__main__':
-    #main()
+# if __name__ == '__main__':
+#     createMyGraph()
     # test = {'Skyeler': {'id':'teehee','api_link':'boring,','genres':['pov indie','video game music'],'img_info':'too pretty','popularity':0,'birth':'Royal Oak Michigan June 30,1999','died':'alive','instruments':['vocalish'],'occupations':['depressed','student','crafty girl']},
     #         'Samuel': {'id':'toho','api_link':'boring,','genres':['pov indie','musical theater'],'img_info':'too handsome','popularity':100,'birth':'Baltimore Maryland June 30,1999','died':'alive','instruments':['vocals','piano','guitar'],'occupations':['depressed','software engineer','adult lego masters fan']}}
 
