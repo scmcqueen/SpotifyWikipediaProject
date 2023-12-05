@@ -47,6 +47,7 @@ def save_cache(cache_dict,CACHE_FILENAME):
 
 
 def parse_playlist(api_output):
+    print(api_output.json())
     track_list = api_output.json()['items']
     artists = {}
 
@@ -154,7 +155,7 @@ def parse_wikimedia_request(name, wiki_result, artists_full_info):
                                 # 'occupations': occupation}
 
 def createMyGraph():
-    token ="BQBDhUnf-pBCr5Qiuhij08_X4HTZnKCx2bwyMaZIBGUNqH0F4VkBe-_u_NZD3n9m9HhzQhza4Es46jMa5LaggY-mltfXhuNQekwCpVroHwsiMyqsMVw"
+    token ="BQD7R2QAhjRAvD_JlXtpkq6nY74D4ad097VByVZ7nz8YiaIUqi012-cR_9p2V7P0IJvmsSYhHkJK17oC9HRAGKefhlTCbSHdcr7DX0DIa1FSDZbdmEA"
 
     headers={"Authorization": f"Bearer {token}"}
 
@@ -198,6 +199,7 @@ def createMyGraph():
 
         for gen in parsed_100[artist]['genres']:
             mygraph.add_nodes_from([(gen,{'type':'genre'})])
+            mygraph.nodes[gen]['type']='genre'
             mygraph.add_edge(artist,gen)
     # print(mygraph)
     # print("---------------")
@@ -210,25 +212,8 @@ def createMyGraph():
     # print(mygraph.nodes['Katy Perry'])
     return(mygraph)
 
-# if __name__ == '__main__':
-#     createMyGraph()
-    # test = {'Skyeler': {'id':'teehee','api_link':'boring,','genres':['pov indie','video game music'],'img_info':'too pretty','popularity':0,'birth':'Royal Oak Michigan June 30,1999','died':'alive','instruments':['vocalish'],'occupations':['depressed','student','crafty girl']},
-    #         'Samuel': {'id':'toho','api_link':'boring,','genres':['pov indie','musical theater'],'img_info':'too handsome','popularity':100,'birth':'Baltimore Maryland June 30,1999','died':'alive','instruments':['vocals','piano','guitar'],'occupations':['depressed','software engineer','adult lego masters fan']}}
+if __name__ == '__main__':
+    createMyGraph()
 
-    # for artist in test:
-    #     print(artist)
-    #     graphy.addVertex(artist)
-
-    #     graphy.vertList[artist].deathDate = test[artist]['died']
-    #     graphy.vertList[artist].birthDate = test[artist]['birth']
-    #     graphy.vertList[artist].occupations = test[artist]['occupations']
-    #     graphy.vertList[artist].instruments = test[artist]['instruments']
-    #     graphy.vertList[artist].popularity= test[artist]['popularity']
-    #     graphy.vertList[artist].image_info = test[artist]['img_info']
-    
-
-    #     for gen in test[artist]['genres']:
-    #         graphy.addEdge(gen,'genre',artist,'artist')
-    
 
     
