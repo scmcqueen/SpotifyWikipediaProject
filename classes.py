@@ -18,7 +18,6 @@ class Node:
         #All these will always be null for genres
         self.deathDate = None
         self.birthDate = None
-        self.origin = None
         self.occupations = []
         self.instruments = []
         self.popularity= None
@@ -36,6 +35,7 @@ class Node:
             nbr.neighbors[self.id] = self
             nbr.degree+=1
     def __str__(self):
+        self.calcDegree()
         return(f"This is {self.id} with {str(self.degree)} neighbors.")
 
 

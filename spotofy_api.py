@@ -201,4 +201,29 @@ def main():
     print(parsed_100['Katy Perry'].keys())
 
 if __name__ == '__main__':
-    main()
+    #main()
+    test = {'Skyeler': {'id':'teehee','api_link':'boring,','genres':['pov indie','video game music'],'img_info':'too pretty','popularity':0,'birth':'Royal Oak Michigan June 30,1999','died':'alive','instruments':['vocalish'],'occupations':['depressed','student','crafty girl']},
+            'Samuel': {'id':'toho','api_link':'boring,','genres':['pov indie','musical theater'],'img_info':'too handsome','popularity':100,'birth':'Baltimore Maryland June 30,1999','died':'alive','instruments':['vocals','piano','guitar'],'occupations':['depressed','software engineer','adult lego masters fan']}}
+    graphy = cs.Graph()
+
+    for artist in test:
+        print(artist)
+        graphy.addVertex(artist)
+
+        graphy.vertList[artist].deathDate = test[artist]['died']
+        graphy.vertList[artist].birthDate = test[artist]['birth']
+        graphy.vertList[artist].occupations = test[artist]['occupations']
+        graphy.vertList[artist].instruments = test[artist]['instruments']
+        graphy.vertList[artist].popularity= test[artist]['popularity']
+        graphy.vertList[artist].image_info = test[artist]['img_info']
+    
+
+        for gen in test[artist]['genres']:
+            graphy.addEdge(gen,'genre',artist,'artist')
+    print(graphy)
+    print(graphy.genres)
+    print(graphy.vertList['Skyeler'].image_info)
+    print(graphy.vertList['pov indie'])
+    
+
+    
