@@ -9,20 +9,20 @@ class Node:
     
     '''
 
-    def __init__(self,name,type):
+    def __init__(self,name,type='genre'):
         self.id = name
         self.neighbors = {} #key is the name of the genre/artist, value is the object
         self.degree =0
         self.type = type #can be either genre or artists
 
         #All these will always be null for genres
-        self.birthCountry = None
-        self.birthState = None
         self.deathDate = None
         self.birthDate = None
         self.origin = None
         self.occupations = []
         self.instruments = []
+        self.popularity= None
+        self.image_info = None
     
     def calcDegree(self):
         self.degree = len(self.neighbors.keys())

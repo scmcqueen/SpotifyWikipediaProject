@@ -180,9 +180,10 @@ def main():
             for item in more_deets.keys():
                 parsed_100[celeb][item]=more_deets[item]
             spotify_cache[celeb]=parsed_100[celeb][item]
+        
     print(parsed_100['Rema'])
 
-    
+
 
 if __name__ == '__main__':
     main()
