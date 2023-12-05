@@ -54,19 +54,23 @@ class Graph():
         if "artist" in type.lower():
             if id not in self.vertList.keys():
                 self.vertList[id]=Node(id,type)
+                self.numVertices +=1
         else: #genre
             if id not in self.genres.keys():
                 new = Node(id,type)
                 self.vertList[id]=new
                 self.genres[id]=new
+                self.numVertices +=1
     def addEdge(self,id1,type1,id2,type2):
         #check if id1 in
         if id1 not in self.vertList.keys():
             self.vertList[id1]=Node(id1,type1)
+            self.numVertices +=1
             if "genre" in type1.lower():
                 self.genres[id1]=self.vertList[id1]
         #check if id2 in 
         if id2 not in self.vertList.keys():
+            self.numVertices +=1
             self.vertList[id2]=Node(id2,type2)
             if "genre" in type2.lower():
                 self.genres[id2]=self.vertList[id2]
