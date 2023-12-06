@@ -38,5 +38,68 @@ def draw_network(graph,labels=True,size_v=300):        #labels is true or false
         text='id:N'
         )
     if labels:
-        return(edgeslayer+n1)
+        return(edgeslayer+n1+text)
     return((edgeslayer+n1).interactive())
+
+def get_genre_artists(graph):
+    '''
+    Gets easy to parse lists of all the artists in a graph and all the genres.
+
+    Returns the lists in a dict with keys 'artists' and 'genres'
+
+    PARAMETERS
+    ----------
+    graph: networkx graph
+        graph with nodes and edges, where every node has attributes id and type
+    
+    RETURNS
+    -------
+    dict: key string, value list
+        dict with keys 'artists' & 'genres' with lists of all artists & genres respectively
+    
+    '''
+    artist_list = []
+    genre_list = []
+
+    for n in graph.nodes():
+        if graph.nodes[n]['type']=='artist':
+            artist_list.append(n)
+        elif graph.nodes[n]['type']=='genre':
+            genre_list.append(n)
+        else:
+            print(n)
+    return({'artists':artist_list,'genres':genre_list})
+
+def get_focus_graph(graph,name):
+        '''
+        returns a subgraph showing one node and its neighbors or none if the name
+        does not correspond to a node id.
+
+        can be used to filter by an artist or a genre.
+
+        PARAMETERS
+        ----------
+        graph: networkx graph
+            graph with nodes and edges, where every node has attributes id and type
+        name: str
+            id of a node that the user wants to investigate
+
+        RETURNS
+        -------
+        networkx graph
+            a filtered networkx subgraph focusing on the input node and its neighbors
+        '''
+        try:
+            neighbors = [n for n in graph.neighbors(name)]
+
+            def filter_node(n1):
+                if n1 ==name: 
+                    return True
+                return (n1 in neighbors)
+        
+            sub_graph = nx.subgraph_view(graph,filter_node)
+            return sub_graph
+        except:
+            return None
+
+
