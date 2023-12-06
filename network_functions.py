@@ -389,7 +389,7 @@ def calculate_avg_popularity(graph):
             count+=1
     return (sum/count)
 
-def filter_popularity(graph,pop): #greater than
+def filter_popularity(graph,pop): 
     '''
     Returns a graph object where all of the artists are above popularity score of pop. 
 
@@ -424,7 +424,7 @@ def filter_popularity(graph,pop): #greater than
 
     for node in sub_graph:
         neighbors = [n for n in graph.neighbors(node)]
-        nbrs += neighbors #could clean this up
+        nbrs += neighbors 
 
     def filter_genres(n1):
         #similar helper function to one above, returns true or false if the node should be included
@@ -438,4 +438,24 @@ def filter_popularity(graph,pop): #greater than
 
     return nx.subgraph_view(graph,filter_genres)
 
+def load_example_graph(filename='test_graph_data'):
+    '''
+    Loads a networkx graph from a json file with a node-link graph data. 
 
+    Returns a networkx graph! This function was made to save a step from loading API data. 
+
+    PARAMETERS
+    ----------
+    filename: str
+        the name of the json file you want to load
+
+    RETURNS
+    -------
+    networkx graph
+        a node link graph objects
+    '''
+    ex_file = open(filename,"r")
+    graph_contents = ex_file.read()
+    graph_dict = json.loads(graph_contents)
+    ex_file.close()
+    return nx.node_link_graph(graph_dict)
