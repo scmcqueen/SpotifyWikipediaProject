@@ -8,6 +8,7 @@ import graph_networkx as gnx
 import nx_altair as nxa
 import pandas as pd
 import altair as alt
+from networkx.readwrite import json_graph
 
 def draw_network(graph,labels=True,size_v=300):        #labels is true or false
     '''
