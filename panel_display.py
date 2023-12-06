@@ -23,21 +23,22 @@ sidecol = pn.Column()
 
 welcome_text = pn.pane.Markdown(
     '''
-    ## Click 'start' to get the current top 100 artists. 
+    ## Input a link to a public playlist on Spotify
     ''')
 
-start_button = pn.widget.Button(name='Start',button_type='primary')
+playlist_link_input = pn.widgets.TextInput(name='',placeholder='')
+start_button = pn.widgets.Button(name='Start',button_type='primary')
 
 sidecol.append(welcome_text)
 sidecol.append(start_button)
 
 template = pn.template.BootstrapTemplate(
-    title='Spotify & Wikipedia',
-    #sidebar=sidecol
+    title='Analyze your playlist',
+    sidebar=sidecol
 )
 
 
-template.main.append()
+#template.main.append(sidecol)
 
 
 
