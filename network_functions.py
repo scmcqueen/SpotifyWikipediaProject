@@ -446,7 +446,7 @@ def filter_popularity(graph,pop):
 
     return nx.subgraph_view(graph,filter_genres)
 
-def load_example_graph(filename='test_graph_data'):
+def load_example_graph(graph_name='test_graph_data',dict_name='test_lookup_data',name="Skyeler's Current Tunes"):
     '''
     Loads a networkx graph from a json file with a node-link graph data. 
 
@@ -454,19 +454,28 @@ def load_example_graph(filename='test_graph_data'):
 
     PARAMETERS
     ----------
-    filename: str
-        the name of the json file you want to load
+    graph_name: str
+        the name of the json file you want to load with graph data
+    dict_name: str
+        the name of the json file you want to load with lookup dict data
+    name: str
+        name of the playlist you're loading
 
     RETURNS
     -------
-    networkx graph
+    list: [networkx graph, dict]
         a node link graph objects
     '''
-    ex_file = open(filename,"r")
+    ex_file = open(graph_name,"r")
     graph_contents = ex_file.read()
     graph_dict = json.loads(graph_contents)
     ex_file.close()
-    return nx.node_link_graph(graph_dict)
+
+    dict_file = open(dict_name,"r")
+    lookup_cont = dict_file.read()
+    lookup = json.loads(lookup_cont)
+    dict_file.close()
+    return [nx.node_link_graph(graph_dict),lookup,name]
 
 def parse_playlist(link='skyeler'):
     if link.lower() == 'skyeler':
