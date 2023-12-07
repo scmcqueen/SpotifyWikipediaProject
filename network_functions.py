@@ -225,7 +225,7 @@ def search_alive(graph,lookup):
 
     return nx.subgraph_view(graph,filter_genres)
 
-def search_from(graph,place): 
+def search_from(graph,place,lookup): 
     '''
     Returns a graph object where all of the artists were born in a specific place or year.
 
@@ -237,6 +237,8 @@ def search_from(graph,place):
         graph with nodes and edges, where every node has attributes id and type
     from: str
         the place of birth or year of birth, e.g. 'New York', 'England', '1997', 'June'
+    lookup: dict
+        dict with keys string and value dictionary, contains extra info about the artist.
 
     RETURNS
     -------
@@ -248,9 +250,9 @@ def search_from(graph,place):
     #if returns true, will be included in subgraph
         if graph.nodes[n1]['type']=='genre': #discount all genres
             return False
-        if graph.nodes[n1]['birth']==None: #don't include things without data
+        if lookup[n1]['birth']==None: #don't include things without data
             return False
-        elif place.lower() in graph.nodes[n1]['birth'].lower(): 
+        elif place.lower() in lookup[n1]['birth'].lower(): 
             return True
         return False
     
@@ -264,7 +266,7 @@ def search_from(graph,place):
     def filter_genres(n1):
         #similar helper function to one above, returns true or false if the node should be included
         #filters to include the nodes from sub_graph and their neighbors
-        if n1 in list(sub_graph.nodes): 
+        if n1 in (sub_graph.nodes): 
             return True
         elif graph.nodes[n1]['type']!='genre':
             return False
