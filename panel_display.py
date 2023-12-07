@@ -20,11 +20,12 @@ pn.extension(design='bootstrap')
 
 #initialize global variables
 graph = None
+blank_chart = alt.Chart(pd.DataFrame([], columns=['Waiting for good tunes...'])).mark_point().encode(
+            x='Waiting for good tunes..:Q',
+        )
 
 #Here I will define my left sidecol
-
 sidecol = pn.Column()
-
 welcome_text = pn.pane.Markdown(
     '''
     ## Input a link to a public playlist on Spotify
@@ -56,7 +57,18 @@ template = pn.template.BootstrapTemplate(
 #set up title 
 title_panel = pn.pane.Markdown(f''' # Let's analyze your playlist [PLACEHOLDER]
                                ''')
+#set up row 1
+row1 = pn.Row()
 
+#big graph
+playlist_graph = pn.panel(blank_chart)
+
+#genre chart
+
+
+
+
+row1.append(playlist_graph)
 
 
 template.main.append(title_panel)
