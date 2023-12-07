@@ -197,7 +197,7 @@ def createMyGraph():
     for artist in parsed_100:
         parsed_100[artist]['type']='artist'
 
-        mygraph.add_nodes_from([(artist,{'type':'genre'})])
+        mygraph.add_nodes_from([(artist,{'type':'artist'})])
 
 
         for gen in parsed_100[artist]['genres']:
