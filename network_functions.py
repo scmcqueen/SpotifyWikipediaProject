@@ -324,7 +324,7 @@ def search_occupations(graph,job,lookup):
 
     return nx.subgraph_view(graph,filter_genres)
 
-def search_instruments(graph,instru): 
+def search_instruments(graph,instru,lookup): 
     '''
     Returns a graph object where all of the artists play a specific instrument.
 
@@ -336,6 +336,8 @@ def search_instruments(graph,instru):
         graph with nodes and edges, where every node has attributes id and type
     instru: str
         the instrument being searched for, e.g. 'vocals', 'guitar', 'piano'
+    lookup: dict
+        dict with keys string and value dictionary, contains extra info about the artist.
 
     RETURNS
     -------
@@ -347,9 +349,9 @@ def search_instruments(graph,instru):
     #if returns true, will be included in subgraph
         if graph.nodes[n1]['type']=='genre':
             return False
-        if graph.nodes[n1]['instruments']==None:
+        if lookup[n1]['instruments']==None:
             return False
-        elif instru.lower() in graph.nodes[n1]['instruments']: 
+        elif instru.lower().strip() in lookup[n1]['instruments']: 
             return True
         return False
     
@@ -364,7 +366,7 @@ def search_instruments(graph,instru):
     def filter_genres(n1):
         #similar helper function to one above, returns true or false if the node should be included
         #filters to include the nodes from sub_graph and their neighbors
-        if n1 in list(sub_graph.nodes): 
+        if n1 in (sub_graph.nodes): 
             return True
         elif graph.nodes[n1]['type']!='genre':
             return False
