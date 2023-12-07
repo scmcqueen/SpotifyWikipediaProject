@@ -374,16 +374,16 @@ def search_instruments(graph,instru,lookup):
     
     return nx.subgraph_view(graph,filter_genres)
 
-def calculate_avg_popularity(graph):
+def calculate_avg_popularity(lookup):
     '''
-    Return the average popularity of all artists in the graph. 
+    Return the average popularity of all artists in the lookup dictionary. 
 
     Uses Spotify's popularity score, which ranges from 0-100. 
 
     PARAMETERS
     ----------
-    graph: networkx graph
-        graph with nodes and edges, where every node has attributes id and type
+    lookup: dict
+        dict with keys string and value dictionary, contains extra info about the artist.
 
     RETURNS
     ------
@@ -391,12 +391,10 @@ def calculate_avg_popularity(graph):
         The average popularity of all artists in the graph
     '''
     count = 0
-    sum = 0
-
-    for n in graph.nodes:
-        if graph.nodes[n]['type']!='genre':
-            sum +=graph.nodes[n]['popularity']
-            count+=1
+    sum=0
+    for n in lookup.keys():
+        sum +=lookup[n]['popularity']
+        count+=1
     return (sum/count)
 
 def filter_popularity(graph,pop): 
