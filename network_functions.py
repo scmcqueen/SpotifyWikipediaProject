@@ -486,3 +486,28 @@ def parse_playlist(link='skyeler'):
         return load_example_graph()
     return None
     #SKYELER TO DO!!! ADD PARSING OF API LINK
+
+def get_most_popular_artist(lookup):
+    '''
+    Return the most popular artists' names, based on spotify's popularity score. 
+
+    PARAMETERS
+    ----------
+    lookup: dict
+        dict with keys string and value dictionary, contains extra info about the artist.
+
+    RETURNS
+    -------
+    list
+        names of the most popular artist.
+    '''
+
+    pop = 0
+    persons = []
+    for artist in lookup.keys():
+        if lookup[artist]['popularity']==pop:
+            persons.append(artist)
+        elif lookup[artist]['popularity']>pop:
+            pop = lookup[artist]['popularity']
+            persons = [artist]
+    return persons

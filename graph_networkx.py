@@ -155,7 +155,7 @@ def parse_wikimedia_request(name, wiki_result, artists_full_info):
                                 # 'occupations': occupation}
 
 def createMyGraph():
-    token ="BQCIztg1UjDT-qrYMvYHUuk2xWap_Mv4ueB0ghV5KLAJvx6k-8TzEbquXLCFV0nB6ZfFAen8aTUZrFx42Qxbahfzsc_qrvEDsHoGBB5sCoQw0wZ44HE"
+    token ="BQCqN1f9J0sTBh-OFxuNFWc584q0uQNtc1rPJPUyX2XnVA2_v-nyDpvvHsX97AogACuUjfeaxHS65oF5kLGvYszPdZz6Uz3hTsKZqjkGgknhHJiO99E"
 
     headers={"Authorization": f"Bearer {token}"}
 
