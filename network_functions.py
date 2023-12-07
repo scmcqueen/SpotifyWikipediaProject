@@ -30,6 +30,10 @@ def draw_network(graph,labels=True,size_v=300):        #labels is true or false
     altair chart
         chart showing the nodes and edges
     '''
+
+    for n in graph.nodes():
+        graph.nodes[n]['id']=str(n)
+
     position = nx.spring_layout(graph)
 
     nodelayer = nxa.draw_networkx_nodes(graph,pos=position)
