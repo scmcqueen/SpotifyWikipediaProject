@@ -155,7 +155,7 @@ def parse_wikimedia_request(name, wiki_result, artists_full_info):
                                 # 'occupations': occupation}
 
 def createMyGraph():
-    token ="BQDxuCiRJSB7qPlw7lp_XFMB_IHw5xkNe6ybCnMJ_TDH0A8kEW3pVRNXMDCkTeLaprIPOxoIjNZWy8zpE92D8GOFpEozoT9T_J49JALg-fZlfmEvFm8"
+    token ="BQBykiBF-wZjdNzzWMMgp91dMXeoU60ARpuqyAN7zbAcxAMJCMUkPISqZICG8hqmbhbxc4DTDa-NivOegQtVUPU1zEToqFM0MoU9yDRgI0_lEghPNP0"
 
     headers={"Authorization": f"Bearer {token}"}
 
@@ -173,7 +173,7 @@ def createMyGraph():
     test_link = "https://api.spotify.com/v1/artists/07YZf4WDAMNwqr4jfgOZ8y"
     get_artist_genres(test_link,headers)
 
-    wikimedia_token ="eyJraWQiOiJzeVNnS1JaZWdwcDFlSGZEYnlsR2YrTnBjVmVXUDZJNGJlSFpOWjBDZVdrPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIxNGQ2MGMxOC04MGQ2LTQ5NzAtYTA4Mi0yYTY4MTRkMzFjZDkiLCJjb2duaXRvOmdyb3VwcyI6WyJncm91cF8xIl0sImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy1lYXN0LTEuYW1hem9uYXdzLmNvbVwvdXMtZWFzdC0xX0tiNW5ZZDN6dSIsImNsaWVudF9pZCI6IjY0MXU0aTdncHR1ZmZzc2w0bTlvYXR2NHU5Iiwib3JpZ2luX2p0aSI6ImFlM2RlZTU5LWRlZjEtNGViOS05Njk0LWJjZWU1YTQ2YWIwZiIsImV2ZW50X2lkIjoiZTJmMjdmYWUtNWVmZi00NWM0LTlmNDQtOTRhNjA1NjEyN2E1IiwidG9rZW5fdXNlIjoiYWNjZXNzIiwic2NvcGUiOiJhd3MuY29nbml0by5zaWduaW4udXNlci5hZG1pbiIsImF1dGhfdGltZSI6MTcwMTc4ODQ0MSwiZXhwIjoxNzAxODc0ODQxLCJpYXQiOjE3MDE3ODg0NDEsImp0aSI6ImU1ZTRiMTk1LTVkYjEtNDZmMy04OWFkLTdiMzA5YjEyOTgwMyIsInVzZXJuYW1lIjoic2t5ZWxlcmJlYXIifQ.SOwOkuenPGk6o8bCQHDbWBPdvfnSNC-MBzwGFdpsiWFaxSqJQifQuosDkRy5JcCOEW2hpeTESOIlVQKFvALEdVb1dm5hiCXZfA1as2C6pKNeadHn_5QkaoyjZ7Y3BiC444dnlLWg9eE6b_daK-P6pMg8_EVltd2L4up8kQK1Ag3wS00SJkwfyiuEr6-_5RGu6P4z5UsRo0Fq_c09MF8bC5Mac1HYufjoo0wQPXJZRyASCrzY3qPq6Zg-GFgKHSOe79QqR9uOSK_JIMugAlJNY7g62lIbidy-3mMkxqKTX2c2oYTgoxuFovkdMlyhIyhf4um-9wagrNNzBkuJW2zd_w"
+    wikimedia_token ="eyJraWQiOiJzeVNnS1JaZWdwcDFlSGZEYnlsR2YrTnBjVmVXUDZJNGJlSFpOWjBDZVdrPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIxNGQ2MGMxOC04MGQ2LTQ5NzAtYTA4Mi0yYTY4MTRkMzFjZDkiLCJjb2duaXRvOmdyb3VwcyI6WyJncm91cF8xIl0sImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy1lYXN0LTEuYW1hem9uYXdzLmNvbVwvdXMtZWFzdC0xX0tiNW5ZZDN6dSIsImNsaWVudF9pZCI6IjY0MXU0aTdncHR1ZmZzc2w0bTlvYXR2NHU5Iiwib3JpZ2luX2p0aSI6ImEzMGRmMmZmLWNlNDAtNDBkMS04YjdkLWUzNWEyZmFiMDA3ZSIsImV2ZW50X2lkIjoiOWE3MjViMjYtNDMwNy00YjM5LThiMzktZTE0MDllMTYxMmY4IiwidG9rZW5fdXNlIjoiYWNjZXNzIiwic2NvcGUiOiJhd3MuY29nbml0by5zaWduaW4udXNlci5hZG1pbiIsImF1dGhfdGltZSI6MTcwMTk3MDgwMCwiZXhwIjoxNzAyMDU3MjAwLCJpYXQiOjE3MDE5NzA4MDAsImp0aSI6ImVlNjE3NjBlLTI3MzMtNDQwMC1iNDg2LTIwNjIwMDlhYzMxOSIsInVzZXJuYW1lIjoic2t5ZWxlcmJlYXIifQ.nI2jNZWALbgFRfLybK405Fjjp28uBBVrD5yEW2sFOJ6UPg4PrnNqkwjJ9Ch8lzCtq45MOl9AwrEf7hzFMWnJ5-_pSX6pCi1X8YZ0VA-kXGhjUhfOmtKUbCcl6T62xAuyN9GCQ2168BAv-GFR2vzz3YYrFzknEXn_-6d0u3nELmI2I_0NMxvCrfp6nfhV7SpSAwc0Uo3KsE2zjRjbruWHSM5pVokHwYuMRiVez2bdH_FIQTE76XNOVDEW4aI9sywm6Ig1f4R2lRn8xWacZcyd9CmzC9ROClgDw-GWMRmURRsoonVoKFO04n2lG9NXrk_1XVQWjU-EXoVykHWp-kqfnw"
     wiki_headers = {"Authorization": f'Bearer {wikimedia_token}'}
 
     for celeb in parsed_100.keys():
@@ -197,7 +197,7 @@ def createMyGraph():
     for artist in parsed_100:
         parsed_100[artist]['type']='artist'
 
-        mygraph.add_nodes_from([(artist,parsed_100[artist])])
+        mygraph.add_nodes_from([(artist,{'type':'genre'})])
 
 
         for gen in parsed_100[artist]['genres']:
@@ -213,7 +213,7 @@ def createMyGraph():
     # #print(f"The number of vertices is: {len(mygraph.vertList)}!")
     # print("---------------")
     # print(mygraph.nodes['Katy Perry'])
-    return(mygraph)
+    return([mygraph,parsed_100,"placeholder playlist name"])
 
 if __name__ == '__main__':
     createMyGraph()
