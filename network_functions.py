@@ -274,7 +274,7 @@ def search_from(graph,place,lookup):
 
     return nx.subgraph_view(graph,filter_genres)
 
-def search_occupations(graph,job): 
+def search_occupations(graph,job,lookup): 
     '''
     Returns a graph object where all of the artists have a specific occupation.
 
@@ -286,6 +286,8 @@ def search_occupations(graph,job):
         graph with nodes and edges, where every node has attributes id and type
     job: str
         the occupation being searched for, e.g. 'poet', 'television', 'author', 'entrepreneur'
+    lookup: dict
+        dict with keys string and value dictionary, contains extra info about the artist.
 
     RETURNS
     -------
@@ -297,9 +299,9 @@ def search_occupations(graph,job):
     #if returns true, will be included in subgraph
         if graph.nodes[n1]['type']=='genre': #genres don't have jobs
             return False
-        if graph.nodes[n1]['occupations']==None:
+        if lookup[n1]['occupations']==None:
             return False
-        elif job.lower() in graph.nodes[n1]['occupations']: 
+        elif job.lower().strip() in lookup[n1]['occupations']: 
             return True
         return False
     
@@ -314,7 +316,7 @@ def search_occupations(graph,job):
     def filter_genres(n1):
         #similar helper function to one above, returns true or false if the node should be included
         #filters to include the nodes from sub_graph and their neighbors
-        if n1 in list(sub_graph.nodes): 
+        if n1 in (sub_graph.nodes): 
             return True
         elif graph.nodes[n1]['type']!='genre':
             return False
