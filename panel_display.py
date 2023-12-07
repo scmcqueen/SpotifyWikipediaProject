@@ -55,13 +55,14 @@ def click_start(event):
     #graph = ntf.parse_playlist(playlist_input.value)
     pass
 
+#load in example data, use these local variables
 example_info = ntf.load_example_graph()
 graph = example_info[0]
 lookup_dict = example_info[1]
 title = example_info[2]
 
 
-playlist_graph = pn.panel(ntf.draw_network(graph,labels=True,size_v=400).interactive())
+playlist_graph = pn.panel(ntf.draw_network(graph,labels=False,size_v=400).interactive().properties(title=f"{title}",height=600,width=600))
 
 
 
