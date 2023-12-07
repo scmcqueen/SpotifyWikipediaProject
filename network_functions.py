@@ -136,9 +136,9 @@ def get_shortest_graph(graph,name,end):
         except:
             return None
 
-def search_dead(graph): 
+def search_dead(graph, lookup): 
     '''
-    Returns a graph object where all of the artists are known to be dead.
+    Returns a graph object where all of the artists are known to be dead, by referencing the lookup dict.
 
     Contains the artists and their genres. 
 
@@ -146,6 +146,8 @@ def search_dead(graph):
     ----------
     graph: networkx graph
         graph with nodes and edges, where every node has attributes id and type
+    lookup: dict
+        dict with keys string and value dictionary, contains extra info about the artist.
 
     RETURNS
     -------
@@ -157,9 +159,9 @@ def search_dead(graph):
         #basically a filtering function
         if graph.nodes[n1]['type']=='genre': #if its a genre its not dead
             return False
-        elif graph.nodes[n1]['died']== None: #if there's no data, we won't count it as dead
+        elif lookup[n1]['died']== None: #if there's no data, we won't count it as dead
                 return False
-        elif graph.nodes[n1]['died']=='alive': #if its alive, then it is not dead
+        elif lookup[n1]['died']=='alive': #if its alive, then it is not dead
                 return False
         return True
     sub_graph = nx.subgraph_view(graph,filter_node_dead)
@@ -173,13 +175,13 @@ def search_dead(graph):
     def filter_genres(n1):
         #similar helper function to one above, returns true or false if the node should be included
         #filters to include the nodes from sub_graph and their neighbors
-        if n1 in list(sub_graph.nodes): 
+        if n1 in (sub_graph.nodes): 
             return True
         return (n1 in nbrs)
 
     return nx.subgraph_view(graph,filter_genres)
 
-def search_alive(graph): 
+def search_alive(graph,lookup): 
     '''
     Returns a graph object where all of the artists are known to be alive!
 
@@ -189,6 +191,8 @@ def search_alive(graph):
     ----------
     graph: networkx graph
         graph with nodes and edges, where every node has attributes id and type
+    lookup: dict
+        dict with keys string and value dictionary, contains extra info about the artist.
 
     RETURNS
     -------
@@ -200,9 +204,9 @@ def search_alive(graph):
     #if returns true, will be included in subgraph
         if graph.nodes[n1]['type']=='genre': #if its a genre its not alive
             return False
-        if graph.nodes[n1]['died'] is None:
+        if lookup[n1]['died'] is None:
              return False
-        elif graph.nodes[n1]['died']=='alive':
+        elif lookup[n1]['died']=='alive':
                 return True
         return False
     sub_graph= nx.subgraph_view(graph,filter_node)
@@ -215,7 +219,7 @@ def search_alive(graph):
     def filter_genres(n1):
         #similar helper function to one above, returns true or false if the node should be included
         #filters to include the nodes from sub_graph and their neighbors
-        if n1 in list(sub_graph.nodes): 
+        if n1 in (sub_graph.nodes): 
             return True
         return (n1 in nbrs)
 
