@@ -63,6 +63,9 @@ example_info = ntf.load_example_graph()
 graph = example_info[0]
 lookup_dict = example_info[1]
 title = example_info[2]
+artist_genres = ntf.get_genre_artists(graph)
+artists_list = artist_genres['artists']
+genres_list = artist_genres['genres']
 
 #playlist main widget
 playlist_graph = pn.panel(ntf.draw_network(graph,labels=False,size_v=400).interactive().properties(height=550,width=550))
@@ -94,14 +97,55 @@ for item in popular_artists:
    "cute.png") 
     row1rightcol.append(pn.pane.Image("cute.png",width=lookup_dict[item]['img_info'][1]['width'],height=lookup_dict[item]['img_info'][1]['height']))
 
+#lookup artists
+lookup_artist_col = pn.Column()
 
+autocomplete_lookup = pn.widgets.AutocompleteInput(
+    name='Look up an artist or genre:', options=(artists_list+genres_list),
+    case_sensitive=False, search_strategy='includes',
+    placeholder=popular_artists[0])
+search_button = pn.widgets.Button(name='Search',button_type='primary')
+
+lookup_artist_col.append(autocomplete_lookup)
+lookup_artist_col.append(search_button)
+
+focused_chart_pane = pn.panel(ntf.draw_network(ntf.get_focus_graph(graph,popular_artists[0]),size_v=400).interactive())
+lookup_artist_col.append(focused_chart_pane)
+searched_image_pane = pn.pane.Image("https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_CMYK_Black.png",width=250)
+lookup_artist_col.append(searched_image_pane)
+
+def update_search(event):
+    global searched_image_pane
+    new_term = autocomplete_lookup.value
+    if new_term not in artists_list and new_term not in genres_list:
+        focused_chart_pane.object = ntf.draw_network(ntf.get_focus_graph(graph,popular_artists[0]),size_v=400).interactive().properties(title=f'{new_term} not in your playlist, try again!')
+        searched_image_pane = pn.pane.Image("https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_CMYK_Black.png",width=250)
+        return
+    focused_chart_pane.object = ntf.draw_network(ntf.get_focus_graph(graph,new_term),size_v=400).interactive()
+    if new_term in artists_list:
+        urllib.request.urlretrieve(lookup_dict[new_term]['img_info'][1]['url'], "search.png") 
+        lookup_artist_col.remove(searched_image_pane)
+        searched_image_pane = pn.pane.Image("search.png",width=lookup_dict[new_term]['img_info'][1]['width'],height=lookup_dict[new_term]['img_info'][1]['height'])
+        lookup_artist_col.append(searched_image_pane)
+    return
+
+
+search_button.on_click(update_search)
+
+
+#dead of alive column
+
+dead_or_alive = pn.Column()
+
+
+#Rows etc
 row1=pn.Row()
 title_panel = pn.pane.Markdown(f'''# {title}
                                ''')
 
 row1.append(playlist_graph)
 row1.append(row1rightcol)
-
+row1.append(lookup_artist_col)
 
 template = pn.template.BootstrapTemplate(
     title='507 Dashboard',
