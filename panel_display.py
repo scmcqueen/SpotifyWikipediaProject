@@ -19,6 +19,9 @@ import classes as cs
 import json
 import networkx as nx
 from networkx.readwrite import json_graph
+import urllib.request 
+from PIL import Image 
+
 
 pn.extension('vega')
 alt.renderers.enable('default')
@@ -79,6 +82,17 @@ average_pop_pane = pn.pane.Markdown(f'''### The artists on your playlist have an
                                     ''',width=300)
 
 row1rightcol.append(average_pop_pane)
+
+popular_artists = ntf.get_most_popular_artist(lookup_dict)
+popular_artists_string = ", ".join(popular_artists)
+popular_artists_pane = pn.pane.Markdown(f''' ###### The most popular artist on this playlist is {popular_artists_string}.
+                                        ''',width=300)
+row1rightcol.append(popular_artists_pane)
+for item in popular_artists:
+    urllib.request.urlretrieve( 
+    lookup_dict[item]['img_info'][1]['url'], 
+   "cute.png") 
+    row1rightcol.append(pn.pane.Image("cute.png",width=lookup_dict[item]['img_info'][1]['width'],height=lookup_dict[item]['img_info'][1]['height']))
 
 
 row1=pn.Row()
