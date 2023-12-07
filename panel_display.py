@@ -134,8 +134,38 @@ search_button.on_click(update_search)
 
 
 #dead of alive column
+dead_or_alive = pn.Column(pn.pane.Markdown(
+    ''' ### Dead artists on your playlist
 
-dead_or_alive = pn.Column()
+    based on available wikipedia data
+'''
+))
+dead_or_alive.append(pn.panel(ntf.draw_network(ntf.search_dead(graph,lookup_dict))))
+dead_or_alive.append(pn.pane.Markdown(
+    ''' ### Alive artists on your playlist
+
+    based on available wikipedia data
+'''
+))
+dead_or_alive.append(pn.panel(ntf.draw_network(ntf.search_alive(graph,lookup_dict)).interactive()))
+
+#the second row -- search for path
+lookup_path_column = pn.Column(pn.pane.Markdown(''' ### Get from A to Z on your playlist
+                                                '''))
+
+start_lookup = pn.widgets.AutocompleteInput(
+    name='Starting point:', options=(artists_list+genres_list),
+    case_sensitive=False, search_strategy='includes',
+    placeholder=popular_artists[0])
+end_lookup = pn.widgets.AutocompleteInput(
+    name='Ending point:', options=(artists_list+genres_list),
+    case_sensitive=False, search_strategy='includes',
+    placeholder=popular_artists[0])
+path_button = pn.widgets.Button(name='Find path',button_type='primary')
+
+lookup_path_column.append(start_lookup)
+lookup_path_column.append(end_lookup)
+lookup_path_column.append(path_button)
 
 
 #Rows etc
@@ -146,6 +176,11 @@ title_panel = pn.pane.Markdown(f'''# {title}
 row1.append(playlist_graph)
 row1.append(row1rightcol)
 row1.append(lookup_artist_col)
+row1.append(dead_or_alive)
+
+row2 = pn.Row()
+
+row2.append(lookup_path_column)
 
 template = pn.template.BootstrapTemplate(
     title='507 Dashboard',
@@ -157,6 +192,7 @@ template = pn.template.BootstrapTemplate(
 template.main.append(title_panel)
 
 template.main.append(row1)
+template.main.append(row2)
 
 template.servable()
 
