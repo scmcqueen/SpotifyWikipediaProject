@@ -459,3 +459,9 @@ def load_example_graph(filename='test_graph_data'):
     graph_dict = json.loads(graph_contents)
     ex_file.close()
     return nx.node_link_graph(graph_dict)
+
+def parse_playlist(link='skyeler'):
+    if link.lower() == 'skyeler':
+        return load_example_graph()
+    return None
+    #SKYELER TO DO!!! ADD PARSING OF API LINK
