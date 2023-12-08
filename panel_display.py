@@ -59,7 +59,10 @@ def click_start(event):
 #load in example data, use these local variables
 #example_info = ntf.load_example_graph()
 
-example_info = gnx.createMyGraph()
+#example_info = gnx.createMyGraph("5kyhuJwtqAlkWCdPiQ1Ltn")
+#37i9dQZF1Fa3HdyrNWa6vZ
+#37i9dQZF1FacGl8FhVmMo5
+example_info = gnx.createMyGraph("37i9dQZF1FacGl8FhVmMo5")
 
 graph = example_info[0]
 lookup_dict = example_info[1]
@@ -69,11 +72,11 @@ artists_list = artist_genres['artists']
 genres_list = artist_genres['genres']
 
 #playlist main widget
-playlist_graph = pn.panel(ntf.draw_network(graph,labels=False,size_v=400).interactive().properties(height=550,width=550))
+playlist_graph = pn.panel(ntf.draw_network(graph,labels=False,size_v=400).interactive().properties(height=700,width=700))
 
 
 #row 1 right col
-row1rightcol = pn.Column()
+row1rightcol = pn.Column(width=500)
 
 average_pop = ntf.calculate_avg_popularity(lookup_dict)
 funny_pop_comment = "Looks like you have good taste."
@@ -83,7 +86,7 @@ if average_pop > 65:
     funny_pop_comment = "You only like the *really* good ones!"
 average_pop_pane = pn.pane.Markdown(f'''### The artists on your playlist have an average popularity of {str(round(average_pop,2))}.
 ###### {funny_pop_comment}
-                                    ''',width=300)
+                                    ''',width=400)
 
 row1rightcol.append(average_pop_pane)
 
@@ -91,10 +94,10 @@ popular_artists = ntf.get_most_popular_artist(lookup_dict)
 popular_artists_string = ", ".join(popular_artists)
 if len(popular_artists)>1:
     popular_artists_pane = pn.pane.Markdown(f''' ###### The most popular artists on this playlist are {popular_artists_string}.
-                                        ''',width=300)
+                                        ''',width=400)
 else:
     popular_artists_pane = pn.pane.Markdown(f''' ###### The most popular artist on this playlist is {popular_artists_string}.
-                                        ''',width=300)
+                                        ''',width=400)
 row1rightcol.append(popular_artists_pane)
 for item in popular_artists:
     urllib.request.urlretrieve( 
@@ -103,7 +106,7 @@ for item in popular_artists:
     row1rightcol.append(pn.pane.Image("cute.png",width=lookup_dict[item]['img_info'][1]['width'],height=lookup_dict[item]['img_info'][1]['height']))
 
 #lookup artists
-lookup_artist_col = pn.Column()
+lookup_artist_col = pn.Column(pn.pane.Markdown(''' #### Focus on one artist or genre '''))
 
 autocomplete_lookup = pn.widgets.AutocompleteInput(
     name='Look up an artist or genre:', options=(artists_list+genres_list),
@@ -238,11 +241,11 @@ checkbutton_inst = pn.widgets.RadioButtonGroup(name='Check Button Group', value=
 checkbutton_occ = pn.widgets.RadioButtonGroup(name='Check Button Group', options=(job_list+['all']), value=job_list[0], orientation='vertical')
 multi_go =pn.widgets.Button(name="Let's go!",button_type='primary')
 
-selection_col = pn.Column(pn.pane.Markdown('''###### Instruments '''))
-selection_col.append(checkbutton_inst)
-selection_col.append(pn.pane.Markdown('''###### Occupations '''))
-selection_col.append(checkbutton_occ)
-selection_col.append(multi_go)
+selection_col1 = pn.Column(multi_go)
+selection_col1.append(pn.pane.Markdown('''###### Instruments '''))
+selection_col1.append(checkbutton_inst)
+selection_col2 = pn.Column(pn.pane.Markdown('''###### Occupations '''))
+selection_col2.append(checkbutton_occ)
 
 
 multiselect_graph_pane = pn.panel(ntf.draw_network(ntf.search_instruments(ntf.search_occupations(graph,job_list[0],lookup_dict),instrument_list[0],lookup_dict)).properties(title=f'Artists who also {job_list[0]} and play {instrument_list[0]}').interactive())
@@ -256,7 +259,7 @@ def multiselect_selection(event):
     else:
         innergraph = ntf.search_instruments(graph,newinst,lookup_dict)
     if newjob=='all':
-        multiselect_graph_pane.object=ntf.draw_network(innergraph)
+        multiselect_graph_pane.object=ntf.draw_network(innergraph).interactive()
     else:
         multiselect_graph_pane.object=ntf.draw_network(ntf.search_occupations(innergraph,newjob,lookup_dict)).properties(title=f'{newjob} + {newinst}').interactive()
     return
@@ -265,10 +268,15 @@ multi_go.on_click(multiselect_selection)
 #checkbutton_occ.on_click(multiselect_selection)
 
 
-occ_and_inst.append(selection_col)
+occ_and_inst.append(selection_col1)
+occ_and_inst.append(selection_col2)
 occ_and_inst.append(multiselect_graph_pane)
 
 job_and_music_col.append(occ_and_inst)
+
+##Top genres
+genre_col = pn.Column(pn.panel(ntf.top_genres_bar(graph)))
+
 
 
 #Rows etc
@@ -290,6 +298,7 @@ row2.append(where_ya_from)
 
 row3=pn.Row(dead_or_alive)
 row3.append(job_and_music_col)
+row3.append(genre_col)
 
 template = pn.template.BootstrapTemplate(
     title='507 Dashboard',

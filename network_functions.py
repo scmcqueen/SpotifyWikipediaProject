@@ -561,3 +561,25 @@ def get_all_instruments(lookup):
             if occ not in inst:
                 inst.append(occ)
     return inst
+
+def top_genres_bar(graph):
+    genres = []
+
+    for gnode in graph.nodes:
+        if graph.nodes[gnode]['type']=='genre':
+            genres.append([gnode,len([n for n in graph.neighbors(gnode)])])
+
+    genre_popularity = pd.DataFrame(genres,columns = ['Genres',"Count of Artists"])
+    #genre_popularity
+
+    return alt.Chart(genre_popularity).mark_bar().encode(
+        x=alt.X('Count of Artists:Q'),
+        y=alt.Y('Genres:N',
+                sort='-x')).transform_window(
+        rank='rank(Neighbors)',
+        #sort=[alt.SortField('Neighbors', order='descending')]
+    ).transform_filter(
+        (alt.datum.rank < 10)
+    ).properties(
+        title='Your top genres'
+    )
