@@ -154,7 +154,11 @@ def parse_wikimedia_request(name, wiki_result, artists_full_info):
                                 # 'instruments': instruments,
                                 # 'occupations': occupation}
 
-def createMyGraph():
+def get_title_info(headers,playlist_id):
+    info = requests.get(f"https://api.spotify.com/v1/playlists/{playlist_id}",headers=headers).json()
+    return(f"{info['name']} by {info['owner']['display_name']}")
+
+def createMyGraph(playlist_id="0Hm1tCeFv45CJkNeIAtrfF"):
     token ="BQAixP7F4_9Sc82qqhe7JUZ8dD31yauzxBC7eSHb9ZAqkhBIuV7dE6bDa0Xy07Jj4MqUMvReKYtpmOAREfUpgbrEjbVqRYmP0QNHvFvKlepswdhOwsU"
 
     headers={"Authorization": f"Bearer {token}"}
@@ -163,7 +167,9 @@ def createMyGraph():
 
     spotify_cache = open_cache(CACHE_FILENAME)
 
-    top100 = requests.get("https://api.spotify.com/v1/playlists/0Hm1tCeFv45CJkNeIAtrfF/tracks",headers=headers) #ACTUAL TOP 100 PLAYLIST
+    title_info = get_title_info(headers,playlist_id)
+
+    top100 = requests.get(f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks",headers=headers) #ACTUAL TOP 100 PLAYLIST
     #3elUaCbtaDQytMZrHbItmy
     #https://open.spotify.com/playlist/1epzzJHOES6doiLf16R6Jw?si=WBINOs5vQ0yvBwLniKMV1w
     #top100 = requests.get("https://api.spotify.com/v1/playlists/1epzzJHOES6doiLf16R6Jw/tracks",headers=headers) #current playlist
@@ -212,10 +218,14 @@ def createMyGraph():
     # #print(f"The number of vertices is: {len(mygraph.vertList)}!")
     # print("---------------")
     # print(mygraph.nodes['Katy Perry'])
-    return([mygraph,parsed_100,"placeholder playlist name"])
+    return([mygraph,parsed_100,title_info])
+
+
 
 if __name__ == '__main__':
-    createMyGraph()
-
-
+    #createMyGraph()
+    token ="BQAixP7F4_9Sc82qqhe7JUZ8dD31yauzxBC7eSHb9ZAqkhBIuV7dE6bDa0Xy07Jj4MqUMvReKYtpmOAREfUpgbrEjbVqRYmP0QNHvFvKlepswdhOwsU"
+    id = "0Hm1tCeFv45CJkNeIAtrfF"
+    headers={"Authorization": f"Bearer {token}"}
+    print(get_title_info(headers,id))
     
