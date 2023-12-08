@@ -79,7 +79,7 @@ funny_pop_comment = "Looks like you have good taste."
 if average_pop < 40:
     funny_pop_comment = "So clearly you're an ~indie icon~"
 if average_pop > 65:
-    funny_pop_comment = "Hey no one said being mainstream is a bad thing!"
+    funny_pop_comment = "You only like the *really* good ones!"
 average_pop_pane = pn.pane.Markdown(f'''### The artists on your playlist have an average popularity of {str(round(average_pop,2))}.
 ###### {funny_pop_comment}
                                     ''',width=300)
@@ -88,7 +88,11 @@ row1rightcol.append(average_pop_pane)
 
 popular_artists = ntf.get_most_popular_artist(lookup_dict)
 popular_artists_string = ", ".join(popular_artists)
-popular_artists_pane = pn.pane.Markdown(f''' ###### The most popular artist on this playlist is {popular_artists_string}.
+if len(popular_artists)>1:
+    popular_artists_pane = pn.pane.Markdown(f''' ###### The most popular artists on this playlist are {popular_artists_string}.
+                                        ''',width=300)
+else:
+    popular_artists_pane = pn.pane.Markdown(f''' ###### The most popular artist on this playlist is {popular_artists_string}.
                                         ''',width=300)
 row1rightcol.append(popular_artists_pane)
 for item in popular_artists:
@@ -163,11 +167,26 @@ end_lookup = pn.widgets.AutocompleteInput(
     placeholder='Z')
 path_button = pn.widgets.Button(name='Find path',button_type='primary')
 
-path_graph = pn.panel(alt.Chart()) #blank chart
+path_graph = pn.panel(alt.Chart(pd.DataFrame([''],columns=['Waiting for data...'])).encode(x='Waiting for data...:Q').mark_circle()) #blank chart
+
+def run_path_lookup(event):
+    start = start_lookup.value
+    end= end_lookup.value
+
+    new_graph = ntf.get_shortest_graph(graph,start,end)
+
+    if new_graph is None:
+        path_graph.object = alt.Chart(pd.DataFrame([''],columns=['No Path Available'])).encode(x='No Path Available:Q').mark_circle()
+        return
+    path_graph.object = ntf.draw_network(new_graph)
+    return
+
+path_button.on_click(run_path_lookup)
 
 lookup_path_column.append(start_lookup)
 lookup_path_column.append(end_lookup)
 lookup_path_column.append(path_button)
+lookup_path_column.append(path_graph)
 
 
 
