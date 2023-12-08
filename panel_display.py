@@ -178,7 +178,7 @@ def run_path_lookup(event):
     if new_graph is None:
         path_graph.object = alt.Chart(pd.DataFrame([''],columns=['No Path Available'])).encode(x='No Path Available:Q').mark_circle()
         return
-    path_graph.object = ntf.draw_network(new_graph)
+    path_graph.object = ntf.draw_network(new_graph).interactive().properties(title=f"Path from {start} to {end}",width=350,height=350)
     return
 
 path_button.on_click(run_path_lookup)
