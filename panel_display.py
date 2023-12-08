@@ -213,9 +213,11 @@ Or when did you come from? Try inputting a place, year, or month to see where an
 ''',width=400))
 year_or_place_input = pn.widgets.TextInput(name='Enter a place or year:',placeholder='California')
 year_or_place_button = pn.widgets.Button(name='Search',button_type='primary')
+year_or_place_graph = pn.panel(ntf.draw_network(ntf.search_from(graph,'california',lookup_dict)).interactive().properties(title='Artists who are California girls at heart <3'))
 
 where_ya_from.append(year_or_place_input)
 where_ya_from.append(year_or_place_button)
+where_ya_from.append(year_or_place_graph)
 
 
 ## search occupation
