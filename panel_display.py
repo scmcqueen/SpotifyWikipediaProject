@@ -113,7 +113,7 @@ search_button = pn.widgets.Button(name='Search',button_type='primary')
 lookup_artist_col.append(autocomplete_lookup)
 lookup_artist_col.append(search_button)
 
-focused_chart_pane = pn.panel(ntf.draw_network(ntf.get_focus_graph(graph,popular_artists[0]),size_v=400).interactive())
+focused_chart_pane = pn.panel(ntf.draw_network(ntf.get_focus_graph(graph,popular_artists[0]),size_v=400).interactive().properties(width=250,height=250))
 lookup_artist_col.append(focused_chart_pane)
 searched_image_pane = pn.pane.Image("https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_CMYK_Black.png",width=250)
 lookup_artist_col.append(searched_image_pane)
@@ -122,10 +122,10 @@ def update_search(event):
     global searched_image_pane
     new_term = autocomplete_lookup.value
     if new_term not in artists_list and new_term not in genres_list:
-        focused_chart_pane.object = ntf.draw_network(ntf.get_focus_graph(graph,popular_artists[0]),size_v=400).interactive().properties(title=f'{new_term} not in your playlist, try again!')
+        focused_chart_pane.object = ntf.draw_network(ntf.get_focus_graph(graph,popular_artists[0]),size_v=400).interactive().properties(title=f'{new_term} not in your playlist, try again!',width=250,height=250)
         searched_image_pane = pn.pane.Image("https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_CMYK_Black.png",width=250)
         return
-    focused_chart_pane.object = ntf.draw_network(ntf.get_focus_graph(graph,new_term),size_v=400).interactive()
+    focused_chart_pane.object = ntf.draw_network(ntf.get_focus_graph(graph,new_term),size_v=400).interactive().properties(width=250,height=250)
     if new_term in artists_list:
         urllib.request.urlretrieve(lookup_dict[new_term]['img_info'][1]['url'], "search.png") 
         lookup_artist_col.remove(searched_image_pane)
@@ -209,8 +209,13 @@ popularity_filter_col.append(popularity_graph)
 ### search from
 
 where_ya_from = pn.Column(pn.pane.Markdown(''' ### Where did you come from? 
-Or when did you come from? Try inputting a place or a year to see where and when your artists wwere born.
+Or when did you come from? Try inputting a place, year, or month to see where and when your artists were born.
 ''',width=400))
+year_or_place_input = pn.widgets.TextInput(name='Enter a place or year:',placeholder='California')
+year_or_place_button = pn.widgets.Button(name='Search',button_type='primary')
+
+where_ya_from.append(year_or_place_input)
+where_ya_from.append(year_or_place_button)
 
 
 ## search occupation
