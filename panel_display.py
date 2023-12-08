@@ -192,7 +192,7 @@ lookup_path_column.append(path_graph)
 popularity_filter_col = pn.Column(pn.pane.Markdown(''' ### Filter artists by popularity 
 based on Spotify's built-in popularity metric
                                                    '''))
-enter_popularity = pn.widgets.IntInput(name='Input popularity score')
+enter_popularity = pn.widgets.EditableIntSlider(name='Popularity',start=0,end=100)
 path_button = pn.widgets.Button(name='Filter!',button_type='primary')
 temp = ntf.filter_popularity(graph,65,lookup_dict) # -- keeps throiwng error?
 popularity_graph = pn.panel(ntf.draw_network(ntf.filter_popularity(graph,50,lookup_dict),size_v=400).interactive().properties(title=f"Artists with a popularity of 50 or higher",width=400,height=400))
