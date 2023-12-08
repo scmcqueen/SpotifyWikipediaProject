@@ -95,11 +95,12 @@ else:
     popular_artists_pane = pn.pane.Markdown(f''' ###### The most popular artist on this playlist is {popular_artists_string}.
                                         ''',width=400)
 row1rightcol.append(popular_artists_pane)
-for item in popular_artists:
-    urllib.request.urlretrieve( 
-    lookup_dict[item]['img_info'][1]['url'], 
-"cute.png") 
-    row1rightcol.append(pn.pane.Image("cute.png",width=lookup_dict[item]['img_info'][1]['width'],height=lookup_dict[item]['img_info'][1]['height']))
+
+
+urllib.request.urlretrieve( 
+lookup_dict[popular_artists[0]]['img_info'][1]['url'], "cute.png") 
+photo_col = (pn.pane.Image("cute.png",width=lookup_dict[popular_artists[0]]['img_info'][1]['width'],height=lookup_dict[popular_artists[0]]['img_info'][1]['height']))
+row1rightcol.append(photo_col)
 
 #lookup artists
 lookup_artist_col = pn.Column(pn.pane.Markdown(''' #### Focus on one artist or genre '''))
@@ -109,6 +110,7 @@ autocomplete_lookup = pn.widgets.AutocompleteInput(
     case_sensitive=False, search_strategy='includes',
     placeholder=popular_artists[0])
 search_button = pn.widgets.Button(name='Search',button_type='primary')
+
 
 lookup_artist_col.append(autocomplete_lookup)
 lookup_artist_col.append(search_button)
@@ -144,14 +146,19 @@ dead_or_alive = pn.Column(pn.pane.Markdown(
     based on available wikipedia data
 '''
 ))
-dead_or_alive.append(pn.panel(ntf.draw_network(ntf.search_dead(graph,lookup_dict)).interactive()))
+dead_pane = pn.panel(ntf.draw_network(ntf.search_dead(graph,lookup_dict)).interactive())
+
+dead_or_alive.append(dead_pane)
 dead_or_alive.append(pn.pane.Markdown(
     ''' ### Alive artists on your playlist
 
     based on available wikipedia data
 '''
 ))
-dead_or_alive.append(pn.panel(ntf.draw_network(ntf.search_alive(graph,lookup_dict)).interactive()))
+
+alive_pane = pn.panel(ntf.draw_network(ntf.search_alive(graph,lookup_dict)).interactive())
+
+dead_or_alive.append(alive_pane)
 
 #the second row -- search for path
 lookup_path_column = pn.Column(pn.pane.Markdown(''' ### Get from A to Z on your playlist
@@ -324,17 +331,51 @@ def update_everything(event):
     playlist_graph.object = ntf.draw_network(graph,labels=False,size_v=400).interactive().properties(height=700,width=700)
 
     #updat popularity pics
+    average_pop = ntf.calculate_avg_popularity(lookup_dict)
+    funny_pop_comment = "Looks like you have good taste."
+    if average_pop < 40:
+        funny_pop_comment = "So clearly you're an ~indie icon~"
+    if average_pop > 65:
+        funny_pop_comment = "You only like the *really* good ones!"
+    average_pop_pane.object =f'''### The artists on your playlist have an average popularity of {str(round(average_pop,2))}.
+###### {funny_pop_comment}'''
+
+    popular_artists = ntf.get_most_popular_artist(lookup_dict)
+    popular_artists_string = ", ".join(popular_artists)
+    if len(popular_artists)>1:
+        popular_artists_pane.object =f''' ###### The most popular artists on this playlist are {popular_artists_string}.'''
+    else:
+        popular_artists_pane.object =f''' ###### The most popular artist on this playlist is {popular_artists_string}.'''
     
+    urllib.request.urlretrieve( lookup_dict[popular_artists[0]]['img_info'][1]['url'], "new.png") 
+    photo_col.object = "new.png"
+    photo_col.width = lookup_dict[popular_artists[0]]['img_info'][1]['width']
+    photo_col.height = lookup_dict[popular_artists[0]]['img_info'][1]['height']
 
     #update focus
 
+    autocomplete_lookup.options=(artists_list+genres_list)
+    autocomplete_lookup.placeholder=popular_artists[0]
+
+    focused_chart_pane.object = ntf.draw_network(ntf.get_focus_graph(graph,popular_artists[0]),size_v=400).interactive().properties(width=350,height=300)
+
+    searched_image_pane.object = "https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_CMYK_Black.png"
+    searched_image_pane.width = 250
+
     #update path
+
+    start_lookup.options = (artists_list+genres_list)
+    end_lookup.options = (artists_list+genres_list)
+
+    path_graph.object = alt.Chart(pd.DataFrame([''],columns=['Waiting for data...'])).encode(x='Waiting for data...:Q').mark_circle().properties(width=400)
 
     #update pop filter
 
     #update where you come from
 
     #update dead or alive
+    dead_pane.object = ntf.draw_network(ntf.search_dead(graph,lookup_dict)).interactive()
+    alive_pane.object = ntf.draw_network(ntf.search_alive(graph,lookup_dict)).interactive()
 
     #update instrument
 
