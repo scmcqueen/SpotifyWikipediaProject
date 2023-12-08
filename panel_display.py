@@ -117,7 +117,7 @@ search_button = pn.widgets.Button(name='Search',button_type='primary')
 lookup_artist_col.append(autocomplete_lookup)
 lookup_artist_col.append(search_button)
 
-focused_chart_pane = pn.panel(ntf.draw_network(ntf.get_focus_graph(graph,popular_artists[0]),size_v=400).interactive().properties(width=250,height=250))
+focused_chart_pane = pn.panel(ntf.draw_network(ntf.get_focus_graph(graph,popular_artists[0]),size_v=400).interactive().properties(width=350,height=300))
 lookup_artist_col.append(focused_chart_pane)
 searched_image_pane = pn.pane.Image("https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_CMYK_Black.png",width=250)
 lookup_artist_col.append(searched_image_pane)
@@ -127,9 +127,9 @@ def update_search(event):
     new_term = autocomplete_lookup.value
     if new_term not in artists_list and new_term not in genres_list:
         focused_chart_pane.object = ntf.draw_network(ntf.get_focus_graph(graph,popular_artists[0]),size_v=400).interactive().properties(title=f'{new_term} not in your playlist, try again!',width=250,height=250)
-        searched_image_pane = pn.pane.Image("https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_CMYK_Black.png",width=250)
+        searched_image_pane = pn.pane.Image("https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_CMYK_Black.png",width=350)
         return
-    focused_chart_pane.object = ntf.draw_network(ntf.get_focus_graph(graph,new_term),size_v=400).interactive().properties(width=250,height=250)
+    focused_chart_pane.object = ntf.draw_network(ntf.get_focus_graph(graph,new_term),size_v=400).interactive().properties(width=350,height=300)
     if new_term in artists_list:
         urllib.request.urlretrieve(lookup_dict[new_term]['img_info'][1]['url'], "search.png") 
         lookup_artist_col.remove(searched_image_pane)
@@ -159,7 +159,7 @@ dead_or_alive.append(pn.panel(ntf.draw_network(ntf.search_alive(graph,lookup_dic
 
 #the second row -- search for path
 lookup_path_column = pn.Column(pn.pane.Markdown(''' ### Get from A to Z on your playlist
-                                                '''))
+                                                '''),width=600)
 
 start_lookup = pn.widgets.AutocompleteInput(
     name='Starting point:', options=(artists_list+genres_list),
@@ -171,7 +171,7 @@ end_lookup = pn.widgets.AutocompleteInput(
     placeholder='Z')
 path_button = pn.widgets.Button(name='Find path',button_type='primary')
 
-path_graph = pn.panel(alt.Chart(pd.DataFrame([''],columns=['Waiting for data...'])).encode(x='Waiting for data...:Q').mark_circle()) #blank chart
+path_graph = pn.panel(alt.Chart(pd.DataFrame([''],columns=['Waiting for data...'])).encode(x='Waiting for data...:Q').mark_circle().properties(width=400)) #blank chart
 
 def run_path_lookup(event):
     start = start_lookup.value
@@ -180,9 +180,9 @@ def run_path_lookup(event):
     new_graph = ntf.get_shortest_graph(graph,start,end)
 
     if new_graph is None:
-        path_graph.object = alt.Chart(pd.DataFrame([''],columns=['No Path Available'])).encode(x='No Path Available:Q').mark_circle()
+        path_graph.object = alt.Chart(pd.DataFrame([''],columns=['No Path Available'])).encode(x='No Path Available:Q').mark_circle().properties(width=400)
         return
-    path_graph.object = ntf.draw_network(new_graph,size_v=400).interactive().properties(title=f"Path from {start} to {end}",width=350,height=350)
+    path_graph.object = ntf.draw_network(new_graph,size_v=400).interactive().properties(title=f"Path from {start} to {end}",width=400,height=400)
     return
 
 path_button.on_click(run_path_lookup)
@@ -195,7 +195,7 @@ lookup_path_column.append(path_graph)
 ##filter popularity 
 popularity_filter_col = pn.Column(pn.pane.Markdown(''' ### Filter artists by popularity 
 based on Spotify's built-in popularity metric
-                                                   '''))
+                                                   '''),width=600)
 enter_popularity = pn.widgets.EditableIntSlider(name='Popularity',start=0,end=100)
 path_button = pn.widgets.Button(name='Filter!',button_type='primary')
 temp = ntf.filter_popularity(graph,65,lookup_dict) # -- keeps throiwng error?
@@ -214,13 +214,13 @@ popularity_filter_col.append(popularity_graph)
 
 where_ya_from = pn.Column(pn.pane.Markdown(''' ### Where did you come from? 
 Or when did you come from? Try inputting a place, year, or month to see where and when your artists were born.
-''',width=400))
+''',width=600))
 year_or_place_input = pn.widgets.TextInput(name='Enter a place or year:',placeholder='California')
 year_or_place_button = pn.widgets.Button(name='Search',button_type='primary')
-year_or_place_graph = pn.panel(ntf.draw_network(ntf.search_from(graph,'california',lookup_dict)).interactive().properties(title='Artists who are California girls at heart <3'))
+year_or_place_graph = pn.panel(ntf.draw_network(ntf.search_from(graph,'california',lookup_dict)).interactive().properties(title='Artists who are California girls at heart <3',width=400,height=400))
 def search_year_or_place(event):
     term = year_or_place_input.value
-    year_or_place_graph.object = ntf.draw_network(ntf.search_from(graph,term,lookup_dict)).interactive().properties(title=f'{term} artists')
+    year_or_place_graph.object = ntf.draw_network(ntf.search_from(graph,term,lookup_dict)).interactive().properties(title=f'{term} artists',width=400,height=400)
     return
 year_or_place_button.on_click(search_year_or_place)
 
@@ -248,7 +248,7 @@ selection_col2 = pn.Column(pn.pane.Markdown('''###### Occupations '''))
 selection_col2.append(checkbutton_occ)
 
 
-multiselect_graph_pane = pn.panel(ntf.draw_network(ntf.search_instruments(ntf.search_occupations(graph,job_list[0],lookup_dict),instrument_list[0],lookup_dict)).properties(title=f'Artists who also {job_list[0]} and play {instrument_list[0]}').interactive())
+multiselect_graph_pane = pn.panel(ntf.draw_network(ntf.search_instruments(ntf.search_occupations(graph,job_list[0],lookup_dict),instrument_list[0],lookup_dict)).properties(title=f'Artists who also {job_list[0]} and play {instrument_list[0]}',width=400,height=400).interactive())
 
 def multiselect_selection(event):
     newinst = checkbutton_inst.value
@@ -259,9 +259,9 @@ def multiselect_selection(event):
     else:
         innergraph = ntf.search_instruments(graph,newinst,lookup_dict)
     if newjob=='all':
-        multiselect_graph_pane.object=ntf.draw_network(innergraph).interactive()
+        multiselect_graph_pane.object=ntf.draw_network(innergraph).interactive().properties(title=f"{newinst}",width=400,height=400)
     else:
-        multiselect_graph_pane.object=ntf.draw_network(ntf.search_occupations(innergraph,newjob,lookup_dict)).properties(title=f'{newjob} + {newinst}').interactive()
+        multiselect_graph_pane.object=ntf.draw_network(ntf.search_occupations(innergraph,newjob,lookup_dict)).properties(title=f'{newjob} + {newinst}').interactive().properties(width=400,height=400)
     return
 
 multi_go.on_click(multiselect_selection)
@@ -275,7 +275,7 @@ occ_and_inst.append(multiselect_graph_pane)
 job_and_music_col.append(occ_and_inst)
 
 ##Top genres
-genre_col = pn.Column(pn.panel(ntf.top_genres_bar(graph)))
+genre_col = pn.Column(pn.panel(ntf.top_genres_bar(graph).properties(title=f"Top Genres in {title}",height=450,width=400).configure_title(fontSize=24)))
 
 
 
@@ -289,7 +289,7 @@ row1.append(row1rightcol)
 row1.append(lookup_artist_col)
 #row1.append(dead_or_alive)
 
-row2 = pn.Row()
+row2 = pn.Row(height=700)
 
 row2.append(lookup_path_column)
 row2.append(popularity_filter_col)

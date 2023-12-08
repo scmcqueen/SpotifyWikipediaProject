@@ -572,7 +572,7 @@ def top_genres_bar(graph):
     genre_popularity = pd.DataFrame(genres,columns = ['Genres',"Count of Artists"])
     #genre_popularity
 
-    return alt.Chart(genre_popularity).mark_bar().encode(
+    return alt.Chart(genre_popularity).mark_bar(color="#065143").encode(
         x=alt.X('Count of Artists:Q'),
         y=alt.Y('Genres:N',
                 sort='-x')).transform_window(
