@@ -318,7 +318,7 @@ def update_everything(event):
 
     rerun_count+=1
     
-    link = playlist_input.value ###NEED TO PARSE THE LINK
+    link = ntf.parse_playlist(playlist_input.value) ###NEED TO PARSE THE LINK
     new_info = gnx.createMyGraph(link) #eventually should have info with the input
     graph = new_info[0]
     lookup_dict = new_info[1]
