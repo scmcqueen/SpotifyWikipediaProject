@@ -178,7 +178,7 @@ def run_path_lookup(event):
     if new_graph is None:
         path_graph.object = alt.Chart(pd.DataFrame([''],columns=['No Path Available'])).encode(x='No Path Available:Q').mark_circle()
         return
-    path_graph.object = ntf.draw_network(new_graph).interactive().properties(title=f"Path from {start} to {end}",width=350,height=350)
+    path_graph.object = ntf.draw_network(new_graph,size_v=400).interactive().properties(title=f"Path from {start} to {end}",width=350,height=350)
     return
 
 path_button.on_click(run_path_lookup)
@@ -187,6 +187,31 @@ lookup_path_column.append(start_lookup)
 lookup_path_column.append(end_lookup)
 lookup_path_column.append(path_button)
 lookup_path_column.append(path_graph)
+
+##filter popularity 
+popularity_filter_col = pn.Column(pn.pane.Markdown(''' ### Filter artists by popularity 
+based on Spotify's built-in popularity metric
+                                                   '''))
+
+enter_popularity = pn.widgets.IntInput(name='Input popularity score',placeholder='65')
+path_button = pn.widgets.Button(name='Filter!',button_type='primary')
+temp = ntf.filter_popularity(graph,65,lookup_dict)
+popularity_graph = pn.panel(ntf.draw_network(graph))
+
+
+popularity_filter_col.append(enter_popularity)
+popularity_filter_col.append(path_button)
+popularity_filter_col.append(popularity_graph)
+
+### search from
+
+
+## search occupation
+
+
+##search instrument 
+
+
 
 
 
@@ -203,6 +228,7 @@ row1.append(dead_or_alive)
 row2 = pn.Row()
 
 row2.append(lookup_path_column)
+row2.append(popularity_filter_col)
 
 template = pn.template.BootstrapTemplate(
     title='507 Dashboard',

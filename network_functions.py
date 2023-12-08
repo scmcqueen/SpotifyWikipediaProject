@@ -401,7 +401,7 @@ def calculate_avg_popularity(lookup):
         count+=1
     return (sum/count)
 
-def filter_popularity(graph,pop): 
+def filter_popularity(graph,pop,lookup): 
     '''
     Returns a graph object where all of the artists are above popularity score of pop. 
 
@@ -413,6 +413,8 @@ def filter_popularity(graph,pop):
         graph with nodes and edges, where every node has attributes id and type
     pop: int
         the lower bound of popularity, e.g. '70'
+    lookup: dict
+        dict with keys string and value dictionary, contains extra info about the artist.
 
     RETURNS
     -------
@@ -424,9 +426,9 @@ def filter_popularity(graph,pop):
     #if returns true, will be included in subgraph
         if graph.nodes[n1]['type']=='genre':
             return False
-        if graph.nodes[n1]['popularity']==None:
+        if lookup[n1]['popularity']==None:
             return False
-        elif int(graph.nodes[n1]['popularity'])>=int(pop): #type enforcement
+        elif int(lookup[n1]['popularity'])>=int(pop): #type enforcement
             return True
         return False
     
@@ -441,7 +443,7 @@ def filter_popularity(graph,pop):
     def filter_genres(n1):
         #similar helper function to one above, returns true or false if the node should be included
         #filters to include the nodes from sub_graph and their neighbors
-        if n1 in list(sub_graph.nodes): 
+        if n1 in (sub_graph.nodes): 
             return True
         elif graph.nodes[n1]['type']!='genre':
             return False
