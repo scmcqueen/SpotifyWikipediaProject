@@ -50,19 +50,15 @@ playlist_input= pn.widgets.TextInput(name='Playlist link:', placeholder='Skyeler
 sidecol.append(welcome_text)
 sidecol.append(playlist_input)
 sidecol.append(start_button)
+
+template = pn.template.BootstrapTemplate(
+    title='507 Dashboard',
+    sidebar=sidecol
+)
+
 #define function to bind
-def click_start(event):
-    global graph
-    #graph = ntf.parse_playlist(playlist_input.value)
-    pass
-
-#load in example data, use these local variables
-#example_info = ntf.load_example_graph()
-
-#example_info = gnx.createMyGraph("5kyhuJwtqAlkWCdPiQ1Ltn")
-#37i9dQZF1Fa3HdyrNWa6vZ
-#37i9dQZF1FacGl8FhVmMo5
-example_info = gnx.createMyGraph("37i9dQZF1FacGl8FhVmMo5")
+#example_info = gnx.createMyGraph("37i9dQZF1FacGl8FhVmMo5")
+example_info = ntf.load_example_graph()
 
 graph = example_info[0]
 lookup_dict = example_info[1]
@@ -102,7 +98,7 @@ row1rightcol.append(popular_artists_pane)
 for item in popular_artists:
     urllib.request.urlretrieve( 
     lookup_dict[item]['img_info'][1]['url'], 
-   "cute.png") 
+"cute.png") 
     row1rightcol.append(pn.pane.Image("cute.png",width=lookup_dict[item]['img_info'][1]['width'],height=lookup_dict[item]['img_info'][1]['height']))
 
 #lookup artists
@@ -195,7 +191,7 @@ lookup_path_column.append(path_graph)
 ##filter popularity 
 popularity_filter_col = pn.Column(pn.pane.Markdown(''' ### Filter artists by popularity 
 based on Spotify's built-in popularity metric
-                                                   '''),width=600)
+                                                '''),width=600)
 enter_popularity = pn.widgets.EditableIntSlider(name='Popularity',start=0,end=100)
 path_button = pn.widgets.Button(name='Filter!',button_type='primary')
 temp = ntf.filter_popularity(graph,65,lookup_dict) # -- keeps throiwng error?
@@ -275,14 +271,14 @@ occ_and_inst.append(multiselect_graph_pane)
 job_and_music_col.append(occ_and_inst)
 
 ##Top genres
-genre_col = pn.Column(pn.panel(ntf.top_genres_bar(graph).properties(title=f"Top Genres in {title}",height=450,width=400).configure_title(fontSize=24)))
-
-
+genre_col = pn.Column()
+genre_chart = pn.panel(ntf.top_genres_bar(graph).properties(title=f"Top Genres in {title}",height=450,width=400).configure_title(fontSize=24))
+genre_col.append(genre_chart)
 
 #Rows etc
 row1=pn.Row(height=850)
 title_panel = pn.pane.Markdown(f'''# {title}
-                               ''')
+                            ''')
 
 row1.append(playlist_graph)
 row1.append(row1rightcol)
@@ -300,20 +296,58 @@ row3=pn.Row(dead_or_alive)
 row3.append(job_and_music_col)
 row3.append(genre_col)
 
-template = pn.template.BootstrapTemplate(
-    title='507 Dashboard',
-    sidebar=sidecol
-)
-
-
-######## NOTE: could add more -- graph of genres maybe switch with dead and alive? or add all three to botom (dead alive, multisearhc, etc.)
-
-
 template.main.append(title_panel)
 
 template.main.append(row1)
 template.main.append(row2)
 template.main.append(row3)
+
+
+
+###################### Define the function to update everything ################
+def update_everything(event):
+    print("Heyyyyyyy queeennnnn")
+    global graph, lookup_dict, title,artist_genres,artists_list,genres_list
+    link = playlist_input.value ###NEED TO PARSE THE LINK
+    new_info = gnx.createMyGraph() #eventually should have info with the input
+    graph = new_info[0]
+    lookup_dict = new_info[1]
+    title = new_info[2]
+    artist_genres = ntf.get_genre_artists(graph)
+    artists_list = artist_genres['artists']
+    genres_list = artist_genres['genres']   
+
+    #update the title
+    title_panel.object = f''' # {title} '''
+
+    #update the big graph
+    playlist_graph.object = ntf.draw_network(graph,labels=False,size_v=400).interactive().properties(height=700,width=700)
+
+    #updat popularity pics
+    
+
+    #update focus
+
+    #update path
+
+    #update pop filter
+
+    #update where you come from
+
+    #update dead or alive
+
+    #update instrument
+
+    #update top genre
+    genre_chart.object= ntf.top_genres_bar(graph).properties(title=f"Top Genres in {title}",height=450,width=400).configure_title(fontSize=24)
+
+
+
+
+    print(graph)
+
+
+start_button.on_click(update_everything)
 
 template.servable()
 
