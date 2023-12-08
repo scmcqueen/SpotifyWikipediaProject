@@ -156,16 +156,19 @@ lookup_path_column = pn.Column(pn.pane.Markdown(''' ### Get from A to Z on your 
 start_lookup = pn.widgets.AutocompleteInput(
     name='Starting point:', options=(artists_list+genres_list),
     case_sensitive=False, search_strategy='includes',
-    placeholder=popular_artists[0])
+    placeholder='A')
 end_lookup = pn.widgets.AutocompleteInput(
     name='Ending point:', options=(artists_list+genres_list),
     case_sensitive=False, search_strategy='includes',
-    placeholder=popular_artists[0])
+    placeholder='Z')
 path_button = pn.widgets.Button(name='Find path',button_type='primary')
+
+path_graph = pn.panel(alt.Chart()) #blank chart
 
 lookup_path_column.append(start_lookup)
 lookup_path_column.append(end_lookup)
 lookup_path_column.append(path_button)
+
 
 
 #Rows etc

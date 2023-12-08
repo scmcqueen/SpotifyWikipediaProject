@@ -138,7 +138,7 @@ def get_shortest_graph(graph,name,end):
             sub_graph = nx.subgraph_view(graph,filter_node)
             return(sub_graph)
         except:
-            return None
+            return alt.Chart(pd.DataFrame([''],columns=['Data'])).encode(x='No Path Available:Q').mark_circle()
 
 def search_dead(graph, lookup): 
     '''
