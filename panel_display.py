@@ -21,6 +21,7 @@ import networkx as nx
 from networkx.readwrite import json_graph
 import urllib.request 
 from PIL import Image 
+import re
 
 
 pn.extension('vega')
@@ -57,7 +58,7 @@ template = pn.template.BootstrapTemplate(
 )
 
 #define function to bind
-#example_info = gnx.createMyGraph("37i9dQZF1FacGl8FhVmMo5")
+#example_info = is a preloaded playlist by skyeler!
 example_info = ntf.load_example_graph()
 
 graph = example_info[0]
@@ -200,17 +201,17 @@ popularity_filter_col = pn.Column(pn.pane.Markdown(''' ### Filter artists by pop
 based on Spotify's built-in popularity metric
                                                 '''),width=600)
 enter_popularity = pn.widgets.EditableIntSlider(name='Popularity',start=0,end=100)
-path_button = pn.widgets.Button(name='Filter!',button_type='primary')
+pop_button = pn.widgets.Button(name='Filter!',button_type='primary')
 temp = ntf.filter_popularity(graph,65,lookup_dict) # -- keeps throiwng error?
 popularity_graph = pn.panel(ntf.draw_network(ntf.filter_popularity(graph,50,lookup_dict),size_v=400).interactive().properties(title=f"Artists with a popularity of 50 or higher",width=400,height=400))
 
 def pop_filter(event):
     popularity_graph.object = ntf.draw_network(ntf.filter_popularity(graph,int(enter_popularity.value),lookup_dict),size_v=400).interactive().properties(title=f"Artists with a popularity of {str(enter_popularity.value)} or higher",width=400,height=400)
     return
-path_button.on_click(pop_filter)
+pop_button.on_click(pop_filter)
 
 popularity_filter_col.append(enter_popularity)
-popularity_filter_col.append(path_button)
+popularity_filter_col.append(pop_button)
 popularity_filter_col.append(popularity_graph)
 
 ### search from
@@ -310,13 +311,15 @@ template.main.append(row2)
 template.main.append(row3)
 
 
-
 ###################### Define the function to update everything ################
+rerun_count =0
 def update_everything(event):
-    print("Heyyyyyyy queeennnnn")
-    global graph, lookup_dict, title,artist_genres,artists_list,genres_list
+    global graph, lookup_dict, title,artist_genres,artists_list,genres_list,  rerun_count
+
+    rerun_count+=1
+    
     link = playlist_input.value ###NEED TO PARSE THE LINK
-    new_info = gnx.createMyGraph() #eventually should have info with the input
+    new_info = gnx.createMyGraph(link) #eventually should have info with the input
     graph = new_info[0]
     lookup_dict = new_info[1]
     title = new_info[2]
@@ -347,8 +350,10 @@ def update_everything(event):
     else:
         popular_artists_pane.object =f''' ###### The most popular artist on this playlist is {popular_artists_string}.'''
     
-    urllib.request.urlretrieve( lookup_dict[popular_artists[0]]['img_info'][1]['url'], "new.png") 
-    photo_col.object = "new.png"
+    
+
+    urllib.request.urlretrieve(lookup_dict[popular_artists[0]]['img_info'][1]['url'], f"new{str(rerun_count)}.png") 
+    photo_col.object = f"new{str(rerun_count)}.png"
     photo_col.width = lookup_dict[popular_artists[0]]['img_info'][1]['width']
     photo_col.height = lookup_dict[popular_artists[0]]['img_info'][1]['height']
 
@@ -370,22 +375,31 @@ def update_everything(event):
     path_graph.object = alt.Chart(pd.DataFrame([''],columns=['Waiting for data...'])).encode(x='Waiting for data...:Q').mark_circle().properties(width=400)
 
     #update pop filter
+    popularity_graph.object = ntf.draw_network(ntf.filter_popularity(graph,50,lookup_dict),size_v=400).interactive().properties(title=f"Artists with a popularity of 50 or higher",width=400,height=400)
 
     #update where you come from
+    year_or_place_graph.object = ntf.draw_network(ntf.search_from(graph,'california',lookup_dict)).interactive().properties(title='Artists who are California girls at heart <3',width=400,height=400)
 
     #update dead or alive
     dead_pane.object = ntf.draw_network(ntf.search_dead(graph,lookup_dict)).interactive()
     alive_pane.object = ntf.draw_network(ntf.search_alive(graph,lookup_dict)).interactive()
 
     #update instrument
+    instrument_list = ntf.get_all_instruments(lookup_dict)
+    job_list = ntf.get_all_occupations(lookup_dict)
+
+    checkbutton_inst.value = instrument_list[0]
+    checkbutton_inst.options = (instrument_list+['all'])
+
+    checkbutton_occ.value=job_list[0]
+    checkbutton_occ.options = (job_list+['all'])
+
+    multiselect_graph_pane.object = ntf.draw_network(ntf.search_instruments(ntf.search_occupations(graph,job_list[0],lookup_dict),instrument_list[0],lookup_dict)).properties(title=f'Artists who also {job_list[0]} and play {instrument_list[0]}',width=400,height=400).interactive()
 
     #update top genre
     genre_chart.object= ntf.top_genres_bar(graph).properties(title=f"Top Genres in {title}",height=450,width=400).configure_title(fontSize=24)
-
-
-
-
     print(graph)
+    return
 
 
 start_button.on_click(update_everything)

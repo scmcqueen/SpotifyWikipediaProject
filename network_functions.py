@@ -9,6 +9,7 @@ import nx_altair as nxa
 import pandas as pd
 import altair as alt
 from networkx.readwrite import json_graph
+import re
 
 def draw_network(graph,labels=True,size_v=300):        #labels is true or false
     '''
@@ -484,10 +485,27 @@ def load_example_graph(graph_name='test_graph_data',dict_name='test_lookup_data'
     return [nx.node_link_graph(graph_dict),lookup,name]
 
 def parse_playlist(link='skyeler'):
-    if link.lower() == 'skyeler':
-        return load_example_graph()
+    '''
+    Get the spotify playlist id from a playlist link 
+
+    PARAMETERS
+    ----------
+    link: str
+        the link to a playlist on spotify
+    
+    RETURNS
+    -------
+    str
+        the spotify playlist id
+    '''
+    regex_pattern = r'/playlist/([a-zA-Z0-9]+)'
+
+    regex_match = re.search(regex_pattern,link)
+
+    if regex_match:
+        id = regex_match.group(1)
+        return id
     return None
-    #SKYELER TO DO!!! ADD PARSING OF API LINK
 
 def get_most_popular_artist(lookup):
     '''

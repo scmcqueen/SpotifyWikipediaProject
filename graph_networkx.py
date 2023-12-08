@@ -159,7 +159,7 @@ def get_title_info(headers,playlist_id):
     return(f"{info['name']} by {info['owner']['display_name']}")
 
 def createMyGraph(playlist_id="0Hm1tCeFv45CJkNeIAtrfF"):
-    token ="BQARzABHyaSbsQ9mghi5yATRbkTo7Gt8CAFz-4pULwDTHNHep3AqA9u0icH0OSri4Z3liJOZUEqJbNgAmyYsP9-Y5B5baN2Rwe8gI6Tmw2F0sFBTFr8"
+    token ="BQBgIcKxUA5AL3XOVCsKz19AmDcN3lMfAo28g1L9fXQjiSZN3jqbbkE25tHLbse-Q1VY-8y2vJxUCNVnCFm4YTRYgjM8ASgD3P4EZMp4MaQsbtOMZnA"
 
     headers={"Authorization": f"Bearer {token}"}
 
