@@ -42,7 +42,7 @@ def draw_network(graph,labels=True,size_v=300):        #labels is true or false
     text = nodelayer.mark_text(color='black').encode(
         text='id:N'
         )
-    if labels:
+    if len(graph.nodes)<21:
         return(edgeslayer+n1+text)
     return((edgeslayer+n1).interactive())
 

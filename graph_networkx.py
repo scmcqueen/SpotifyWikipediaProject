@@ -155,7 +155,7 @@ def parse_wikimedia_request(name, wiki_result, artists_full_info):
                                 # 'occupations': occupation}
 
 def createMyGraph():
-    token ="BQCqN1f9J0sTBh-OFxuNFWc584q0uQNtc1rPJPUyX2XnVA2_v-nyDpvvHsX97AogACuUjfeaxHS65oF5kLGvYszPdZz6Uz3hTsKZqjkGgknhHJiO99E"
+    token ="BQAixP7F4_9Sc82qqhe7JUZ8dD31yauzxBC7eSHb9ZAqkhBIuV7dE6bDa0Xy07Jj4MqUMvReKYtpmOAREfUpgbrEjbVqRYmP0QNHvFvKlepswdhOwsU"
 
     headers={"Authorization": f"Bearer {token}"}
 
@@ -163,10 +163,10 @@ def createMyGraph():
 
     spotify_cache = open_cache(CACHE_FILENAME)
 
-    #top100 = requests.get("https://api.spotify.com/v1/playlists/0Hm1tCeFv45CJkNeIAtrfF/tracks",headers=headers) #ACTUAL TOP 100 PLAYLIST
+    top100 = requests.get("https://api.spotify.com/v1/playlists/0Hm1tCeFv45CJkNeIAtrfF/tracks",headers=headers) #ACTUAL TOP 100 PLAYLIST
     #3elUaCbtaDQytMZrHbItmy
     #https://open.spotify.com/playlist/1epzzJHOES6doiLf16R6Jw?si=WBINOs5vQ0yvBwLniKMV1w
-    top100 = requests.get("https://api.spotify.com/v1/playlists/1epzzJHOES6doiLf16R6Jw/tracks",headers=headers) #current playlist
+    #top100 = requests.get("https://api.spotify.com/v1/playlists/1epzzJHOES6doiLf16R6Jw/tracks",headers=headers) #current playlist
 
     parsed_100 = parse_playlist(top100)
 

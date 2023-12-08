@@ -57,7 +57,10 @@ def click_start(event):
     pass
 
 #load in example data, use these local variables
-example_info = ntf.load_example_graph()
+#example_info = ntf.load_example_graph()
+
+example_info = gnx.createMyGraph()
+
 graph = example_info[0]
 lookup_dict = example_info[1]
 title = example_info[2]
@@ -142,7 +145,7 @@ dead_or_alive = pn.Column(pn.pane.Markdown(
     based on available wikipedia data
 '''
 ))
-dead_or_alive.append(pn.panel(ntf.draw_network(ntf.search_dead(graph,lookup_dict))))
+dead_or_alive.append(pn.panel(ntf.draw_network(ntf.search_dead(graph,lookup_dict)).interactive()))
 dead_or_alive.append(pn.pane.Markdown(
     ''' ### Alive artists on your playlist
 
@@ -269,21 +272,24 @@ job_and_music_col.append(occ_and_inst)
 
 
 #Rows etc
-row1=pn.Row(height=780)
+row1=pn.Row(height=850)
 title_panel = pn.pane.Markdown(f'''# {title}
                                ''')
 
 row1.append(playlist_graph)
 row1.append(row1rightcol)
 row1.append(lookup_artist_col)
-row1.append(dead_or_alive)
+#row1.append(dead_or_alive)
 
 row2 = pn.Row()
 
 row2.append(lookup_path_column)
 row2.append(popularity_filter_col)
 row2.append(where_ya_from)
-row2.append(job_and_music_col)
+
+
+row3=pn.Row(dead_or_alive)
+row3.append(job_and_music_col)
 
 template = pn.template.BootstrapTemplate(
     title='507 Dashboard',
@@ -291,11 +297,14 @@ template = pn.template.BootstrapTemplate(
 )
 
 
+######## NOTE: could add more -- graph of genres maybe switch with dead and alive? or add all three to botom (dead alive, multisearhc, etc.)
+
 
 template.main.append(title_panel)
 
 template.main.append(row1)
 template.main.append(row2)
+template.main.append(row3)
 
 template.servable()
 
