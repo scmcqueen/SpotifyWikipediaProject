@@ -513,3 +513,51 @@ def get_most_popular_artist(lookup):
             pop = lookup[artist]['popularity']
             persons = [artist]
     return persons
+
+def get_all_occupations(lookup):
+    '''
+    return a list of all of the possible occupations that artists have listed on their wikipedia pages. 
+
+    list is unique and lower case.
+
+    PARAMETERS
+    ----------
+    lookup: dict
+        dict with keys string and value dictionary, contains extra info about the artist.
+    
+    RETURNS
+    -------
+    list of str
+        returns a list of occupations
+    '''
+    jobs = []
+    for item in lookup.keys():
+        for occ in lookup[item]['occupations']:
+            occ = occ.replace(',','').lower()
+            if occ not in jobs:
+                jobs.append(occ)
+    return jobs
+
+def get_all_instruments(lookup):
+    '''
+    return a list of all of the possible instruments that artists play based on their wikipedia pages. 
+
+    list is unique and lower case.
+
+    PARAMETERS
+    ----------
+    lookup: dict
+        dict with keys string and value dictionary, contains extra info about the artist.
+    
+    RETURNS
+    -------
+    list of str
+        returns a list of instruments
+    '''
+    inst = []
+    for item in lookup.keys():
+        for occ in lookup[item]['instruments']:
+            occ = occ.replace(',','').lower()
+            if occ not in inst:
+                inst.append(occ)
+    return inst

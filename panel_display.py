@@ -31,9 +31,7 @@ pn.extension(design='bootstrap')
 
 #initialize global variables
 graph = None
-blank_chart = alt.Chart(pd.DataFrame([], columns=['Waiting for good tunes...'])).mark_point().encode(
-            x='Waiting for good tunes..:Q',
-        )
+
 
 #Here I will define my left sidecol
 sidecol = pn.Column()
@@ -225,17 +223,53 @@ where_ya_from.append(year_or_place_button)
 where_ya_from.append(year_or_place_graph)
 
 
-## search occupation
+## search occupation & instruments
+job_and_music_col = pn.Column(pn.pane.Markdown(''' ### Filter by occupations and instrument '''))
+
+occ_and_inst = pn.Row()
+
+instrument_list = ntf.get_all_instruments(lookup_dict)
+job_list = ntf.get_all_occupations(lookup_dict)
+
+checkbutton_inst = pn.widgets.RadioButtonGroup(name='Check Button Group', value=instrument_list[0], options=(instrument_list+['all']),orientation='vertical')
+checkbutton_occ = pn.widgets.RadioButtonGroup(name='Check Button Group', options=(job_list+['all']), value=job_list[0], orientation='vertical')
+multi_go =pn.widgets.Button(name="Let's go!",button_type='primary')
+
+selection_col = pn.Column(pn.pane.Markdown('''###### Instruments '''))
+selection_col.append(checkbutton_inst)
+selection_col.append(pn.pane.Markdown('''###### Occupations '''))
+selection_col.append(checkbutton_occ)
+selection_col.append(multi_go)
 
 
-##search instrument 
+multiselect_graph_pane = pn.panel(ntf.draw_network(ntf.search_instruments(ntf.search_occupations(graph,job_list[0],lookup_dict),instrument_list[0],lookup_dict)).properties(title=f'Artists who also {job_list[0]} and play {instrument_list[0]}').interactive())
+
+def multiselect_selection(event):
+    newinst = checkbutton_inst.value
+    newjob = checkbutton_occ.value
+
+    if newinst=="all":
+        innergraph = graph
+    else:
+        innergraph = ntf.search_instruments(graph,newinst,lookup_dict)
+    if newjob=='all':
+        multiselect_graph_pane.object=ntf.draw_network(innergraph)
+    else:
+        multiselect_graph_pane.object=ntf.draw_network(ntf.search_occupations(innergraph,newjob,lookup_dict)).properties(title=f'{newjob} + {newinst}').interactive()
+    return
+
+multi_go.on_click(multiselect_selection)
+#checkbutton_occ.on_click(multiselect_selection)
 
 
+occ_and_inst.append(selection_col)
+occ_and_inst.append(multiselect_graph_pane)
 
+job_and_music_col.append(occ_and_inst)
 
 
 #Rows etc
-row1=pn.Row()
+row1=pn.Row(height=780)
 title_panel = pn.pane.Markdown(f'''# {title}
                                ''')
 
@@ -249,6 +283,7 @@ row2 = pn.Row()
 row2.append(lookup_path_column)
 row2.append(popularity_filter_col)
 row2.append(where_ya_from)
+row2.append(job_and_music_col)
 
 template = pn.template.BootstrapTemplate(
     title='507 Dashboard',
