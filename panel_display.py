@@ -214,6 +214,11 @@ Or when did you come from? Try inputting a place, year, or month to see where an
 year_or_place_input = pn.widgets.TextInput(name='Enter a place or year:',placeholder='California')
 year_or_place_button = pn.widgets.Button(name='Search',button_type='primary')
 year_or_place_graph = pn.panel(ntf.draw_network(ntf.search_from(graph,'california',lookup_dict)).interactive().properties(title='Artists who are California girls at heart <3'))
+def search_year_or_place(event):
+    term = year_or_place_input.value
+    year_or_place_graph.object = ntf.draw_network(ntf.search_from(graph,term,lookup_dict)).interactive().properties(title=f'{term} artists')
+    return
+year_or_place_button.on_click(search_year_or_place)
 
 where_ya_from.append(year_or_place_input)
 where_ya_from.append(year_or_place_button)

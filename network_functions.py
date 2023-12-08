@@ -452,7 +452,7 @@ def filter_popularity(graph,pop,lookup):
 
     return nx.subgraph_view(graph,filter_genres)
 
-def load_example_graph(graph_name='test_graph_data',dict_name='test_lookup_data',name="Skyeler's Current Tunes"):
+def load_example_graph(graph_name='test_graph_data',dict_name='test_lookup_data',name="Currently by skyelermcquill"):
     '''
     Loads a networkx graph from a json file with a node-link graph data. 
 
