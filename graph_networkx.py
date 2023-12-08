@@ -47,7 +47,7 @@ def save_cache(cache_dict,CACHE_FILENAME):
 
 
 def parse_playlist(api_output):
-    print(api_output.json())
+    #print(api_output.json())
     track_list = api_output.json()['items']
     artists = {}
 
@@ -113,7 +113,7 @@ def parse_wikimedia_request(name, wiki_result, artists_full_info):
     died = None
     occupation = []
     instruments = []
-    print(name)
+    #print(name)
     try:
         for num in range(len(temp_json)):
             if 'in_language' in temp_json[num].keys():
@@ -182,7 +182,6 @@ def createMyGraph():
 
             wiki_deets = wikimedia_request(wikimedia_token,celeb)
             parse_wikimedia_request(celeb,wiki_deets,more_deets)
-            print(more_deets)
             
             for item in more_deets.keys():
                 parsed_100[celeb][item]=more_deets[item]
