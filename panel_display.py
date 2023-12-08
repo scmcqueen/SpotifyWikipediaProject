@@ -192,18 +192,25 @@ lookup_path_column.append(path_graph)
 popularity_filter_col = pn.Column(pn.pane.Markdown(''' ### Filter artists by popularity 
 based on Spotify's built-in popularity metric
                                                    '''))
-
-enter_popularity = pn.widgets.IntInput(name='Input popularity score',placeholder='65')
+enter_popularity = pn.widgets.IntInput(name='Input popularity score')
 path_button = pn.widgets.Button(name='Filter!',button_type='primary')
-temp = ntf.filter_popularity(graph,65,lookup_dict)
-popularity_graph = pn.panel(ntf.draw_network(graph))
+temp = ntf.filter_popularity(graph,65,lookup_dict) # -- keeps throiwng error?
+popularity_graph = pn.panel(ntf.draw_network(ntf.filter_popularity(graph,50,lookup_dict),size_v=400).interactive().properties(title=f"Artists with a popularity of 50 or higher",width=400,height=400))
 
+def pop_filter(event):
+    popularity_graph.object = ntf.draw_network(ntf.filter_popularity(graph,int(enter_popularity.value),lookup_dict),size_v=400).interactive().properties(title=f"Artists with a popularity of {str(enter_popularity.value)} or higher",width=400,height=400)
+    return
+path_button.on_click(pop_filter)
 
 popularity_filter_col.append(enter_popularity)
 popularity_filter_col.append(path_button)
 popularity_filter_col.append(popularity_graph)
 
 ### search from
+
+where_ya_from = pn.Column(pn.pane.Markdown(''' ### Where did you come from? 
+Or when did you come from? Try inputting a place or a year to see where and when your artists wwere born.
+''',width=400))
 
 
 ## search occupation
@@ -229,6 +236,7 @@ row2 = pn.Row()
 
 row2.append(lookup_path_column)
 row2.append(popularity_filter_col)
+row2.append(where_ya_from)
 
 template = pn.template.BootstrapTemplate(
     title='507 Dashboard',
