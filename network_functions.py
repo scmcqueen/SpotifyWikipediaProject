@@ -581,6 +581,21 @@ def get_all_instruments(lookup):
     return inst
 
 def top_genres_bar(graph):
+    '''
+    Return a bar chart of the top 10 genres in a graph. 
+
+    Bar chart is an altair object. 
+
+    PARAMETERS
+    ----------
+    graph: networkx graph
+        graph with nodes and edges, where every node has attributes id and type
+
+    RETURNS
+    -------
+    altair chart
+        bar chart with genres on the y axis and count of artists on the x axis
+    '''
     genres = []
 
     for gnode in graph.nodes:
@@ -598,6 +613,4 @@ def top_genres_bar(graph):
         #sort=[alt.SortField('Neighbors', order='descending')]
     ).transform_filter(
         (alt.datum.rank < 10)
-    ).properties(
-        title='Your top genres'
     )
