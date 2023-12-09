@@ -47,9 +47,23 @@ def save_cache(cache_dict,CACHE_FILENAME):
 
 
 def parse_playlist(api_output):
-    #print(api_output.json())
+    '''
+    Parses the api output of a spotify api playlist tracks call. 
+    Finds each artist per each song on the playlist and adds the artist to a dictionary, 
+    with their spotify id and their api_link. 
+
+    PARAMETERS
+    ----------
+    api_output: requests response type
+        the output of an api get request
+
+    RETURNS
+    -------
+    dict
+        dictionary where the key is the name of an artist (str) and the value is a dictionary with info
+    '''
     track_list = api_output.json()['items']
-    artists = {}
+    output = {}
 
     for item in track_list:
         artist_info = item['track']['artists']
@@ -57,11 +71,9 @@ def parse_playlist(api_output):
             id = artist['id']
             name = artist['name']
             api_link = artist['href']
-            #print(name)
-
-            artists[name]={'id':id,
+            output[name]={'id':id,
                         'api_link':api_link}
-    return artists
+    return output
 
 
 
@@ -149,34 +161,28 @@ def parse_wikimedia_request(name, wiki_result, artists_full_info):
     artists_full_info['died']=died
     artists_full_info['instruments']=instruments
     artists_full_info['occupations']=occupation
-    #artists_full_info[name]={'birth':birth,
-                                # 'died': died,
-                                # 'instruments': instruments,
-                                # 'occupations': occupation}
 
 def get_title_info(headers,playlist_id):
     info = requests.get(f"https://api.spotify.com/v1/playlists/{playlist_id}",headers=headers).json()
     return(f"{info['name']} by {info['owner']['display_name']}")
 
 def createMyGraph(wikimedia_token,spotify_token,playlist_id="0Hm1tCeFv45CJkNeIAtrfF"):
-    #token ="BQBgIcKxUA5AL3XOVCsKz19AmDcN3lMfAo28g1L9fXQjiSZN3jqbbkE25tHLbse-Q1VY-8y2vJxUCNVnCFm4YTRYgjM8ASgD3P4EZMp4MaQsbtOMZnA"
 
     headers={"Authorization": f"Bearer {spotify_token}"}
 
-    CACHE_FILENAME = "spotify_wikipedia.json" #step 7
+    CACHE_FILENAME = "spotify_wikipedia.json" 
 
     spotify_cache = open_cache(CACHE_FILENAME)
 
     title_info = get_title_info(headers,playlist_id)
 
-    top100 = requests.get(f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks",headers=headers) #ACTUAL TOP 100 PLAYLIST
+    top100 = requests.get(f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks",headers=headers) 
    
     parsed_100 = parse_playlist(top100)
 
     test_link = "https://api.spotify.com/v1/artists/07YZf4WDAMNwqr4jfgOZ8y"
     get_artist_genres(test_link,headers)
 
-   # wikimedia_token ="eyJraWQiOiJzeVNnS1JaZWdwcDFlSGZEYnlsR2YrTnBjVmVXUDZJNGJlSFpOWjBDZVdrPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIxNGQ2MGMxOC04MGQ2LTQ5NzAtYTA4Mi0yYTY4MTRkMzFjZDkiLCJjb2duaXRvOmdyb3VwcyI6WyJncm91cF8xIl0sImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy1lYXN0LTEuYW1hem9uYXdzLmNvbVwvdXMtZWFzdC0xX0tiNW5ZZDN6dSIsImNsaWVudF9pZCI6IjY0MXU0aTdncHR1ZmZzc2w0bTlvYXR2NHU5Iiwib3JpZ2luX2p0aSI6ImEwNjBkMjAzLWYzYzAtNDk2Mi05NmI3LWNiZGQwMDk1YjIyNiIsImV2ZW50X2lkIjoiOWMzNGI5MjUtNDYxOS00OTkwLTlhODYtY2M1YjY5NWVmMzRjIiwidG9rZW5fdXNlIjoiYWNjZXNzIiwic2NvcGUiOiJhd3MuY29nbml0by5zaWduaW4udXNlci5hZG1pbiIsImF1dGhfdGltZSI6MTcwMjA2NzcxNSwiZXhwIjoxNzAyMTU0MTE1LCJpYXQiOjE3MDIwNjc3MTUsImp0aSI6ImUxYzIxMDE0LTc5MDMtNGI3OC04N2NmLThhZDVkMzgyYzU3YSIsInVzZXJuYW1lIjoic2t5ZWxlcmJlYXIifQ.a_ko5pPnA-zUGlUbzZmLVCRL4IdE6ePO5F5VdFJF1pNwlhKJDm-DQIazTS-qbT91b1Hp88cltu7O7J7c8c8HYTu6D5KUe8sPtQ1rDxLSYng08-oERaHE17yuDLxObwVVpW6RmdF2ca_2HRosoY9DAyFKAViGrEezo9bfKvuRRTTgQJexGTmDC9gSRGPzs0cwuIQ2n_IlQjYhRvTBjAv5YEyQ0djTsbYvubBzTzigMwE8J_3VGKmAYlUhIvMgtu3swELz_bMU0EzyLzAceSDxSzLywZBS60tFWOaBAIjN1Nb_dBNflxQM4_vPrZJVSo1sW_XKXRaODdV8RySdS26RGA"
     wiki_headers = {"Authorization": f'Bearer {wikimedia_token}'}
 
     for celeb in parsed_100.keys():
@@ -190,7 +196,7 @@ def createMyGraph(wikimedia_token,spotify_token,playlist_id="0Hm1tCeFv45CJkNeIAt
                 parsed_100[celeb][item]=more_deets[item]
             
             spotify_cache[celeb]=parsed_100[celeb]
-        else: #already cached
+        else: 
             parsed_100[celeb] = spotify_cache[celeb]
     save_cache(spotify_cache,CACHE_FILENAME)
     
