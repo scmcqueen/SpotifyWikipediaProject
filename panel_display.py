@@ -320,11 +320,14 @@ template.main.append(row1)
 template.main.append(row2)
 template.main.append(row3)
 
+wikitoken = None
+spotifytoken = None
+
 
 ###################### Define the function to update everything ################
 rerun_count =0
 def update_everything(event):
-    global graph, lookup_dict, title,artist_genres,artists_list,genres_list,  rerun_count
+    global graph, lookup_dict, title,artist_genres,artists_list,genres_list,  rerun_count, wikitoken, spotifytoken
 
     wiki_cred = wikimedia_username_password_input.value.split(',')
     spot_cred = spotify_username_password_input.value.split(',')
@@ -333,8 +336,6 @@ def update_everything(event):
     
     link = ntf.parse_playlist(playlist_input.value) 
 
-    wikitoken = None
-    spotifytoken = None
     try:
         new_info = gnx.createMyGraph(playlist_id=link,wikimedia_token=wikitoken,spotify_token=spotifytoken) 
     except:
