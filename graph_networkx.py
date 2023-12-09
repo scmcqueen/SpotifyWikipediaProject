@@ -220,11 +220,6 @@ def createMyGraph(playlist_id="0Hm1tCeFv45CJkNeIAtrfF"):
 
 
 if __name__ == '__main__':
-    token ="BQARzABHyaSbsQ9mghi5yATRbkTo7Gt8CAFz-4pULwDTHNHep3AqA9u0icH0OSri4Z3liJOZUEqJbNgAmyYsP9-Y5B5baN2Rwe8gI6Tmw2F0sFBTFr8"
-
-    headers={"Authorization": f"Bearer {token}"}
-
-    playlist_id="0Hm1tCeFv45CJkNeIAtrfF"
-    info = requests.get(f"https://api.spotify.com/v1/playlists/{playlist_id}",headers=headers).json()
-    print(f"{info['name']} by {info['owner']['display_name']}")
+    
+    
     pass

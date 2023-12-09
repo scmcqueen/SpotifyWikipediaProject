@@ -614,3 +614,55 @@ def top_genres_bar(graph):
     ).transform_filter(
         (alt.datum.rank < 10)
     )
+
+def get_wikimedia_access_token(username,password):
+    '''
+    Get the access token for the wikimedia api using username and password
+    from post request. 
+
+    Will be used to get information from the wikimedia api.
+
+    PARAMETERS
+    ----------
+    username: str
+        the username of your wikimedia account
+    password: str
+        the password of your wikimedia account
+
+    RETURNS
+    -------
+    str
+        The access token for the wikimedia api
+    '''
+
+    info = requests.post(url="https://auth.enterprise.wikimedia.com/v1/login",
+                        headers={"Content-Type":"application/json"},
+                        data=f'{{"username":"{username}", "password":"{password}"}}')
+    return(info.json()['access_token'])
+
+def get_spotify_token(client_id,client_secret):
+        '''
+        Get the spotify api access token using client id and secret from post request. 
+
+        PARAMETERS
+        ----------
+        client_id: str
+            client id for spotify developer account
+        client_secret: str
+            client secret for spotify developer account
+        RETURNS
+        -------
+        str
+            bearer access token for spotify api
+        '''
+        info = requests.post(url="https://accounts.spotify.com/api/token",
+                        headers={"Content-Type":"application/x-www-form-urlencoded"},
+                        data=f"grant_type=client_credentials&client_id={client_id}&client_secret={client_secret}")
+        return(info.json()['access_token'])
+
+
+
+
+
+
+
