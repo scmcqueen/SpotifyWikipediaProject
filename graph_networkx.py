@@ -170,10 +170,7 @@ def createMyGraph(playlist_id="0Hm1tCeFv45CJkNeIAtrfF"):
     title_info = get_title_info(headers,playlist_id)
 
     top100 = requests.get(f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks",headers=headers) #ACTUAL TOP 100 PLAYLIST
-    #3elUaCbtaDQytMZrHbItmy
-    #https://open.spotify.com/playlist/1epzzJHOES6doiLf16R6Jw?si=WBINOs5vQ0yvBwLniKMV1w
-    #top100 = requests.get("https://api.spotify.com/v1/playlists/1epzzJHOES6doiLf16R6Jw/tracks",headers=headers) #current playlist
-
+   
     parsed_100 = parse_playlist(top100)
 
     test_link = "https://api.spotify.com/v1/artists/07YZf4WDAMNwqr4jfgOZ8y"

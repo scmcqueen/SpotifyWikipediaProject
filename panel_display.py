@@ -39,18 +39,24 @@ sidecol = pn.Column()
 welcome_text = pn.pane.Markdown(
     '''
     ## Input a link to a public playlist on Spotify
-    
-    #### or type "Skyeler" to see what Skyeler is listening to now...
     ''')
 
 
 #left hand widgets
 start_button = pn.widgets.Button(name='Start',button_type='primary')
 playlist_input= pn.widgets.TextInput(name='Playlist link:', placeholder='Skyeler')
-#append widgets to side col
+
 sidecol.append(welcome_text)
 sidecol.append(playlist_input)
 sidecol.append(start_button)
+
+sidecol.append(pn.pane.Markdown('''#### Or try one of our recommended playlists!
+https://open.spotify.com/playlist/0UNIeYdHASM38T47qjz9bQ?si=O6VNvV3yRlibUvEq9SczqQ&pt=a41b9d34793c945e2d32981e1c92a945&pi=u-mmMmyTYyTSKF                        
+
+https://open.spotify.com/playlist/1wzmHWDXTgPQjSzaAMYSr8?si=nAfKLU8XQqyul7GhLw69fw&pt=53a8902253dfa4d789c3d87d6173779c
+                                
+                                ''',width=300))
+
 
 template = pn.template.BootstrapTemplate(
     title='507 Dashboard',
@@ -403,6 +409,7 @@ def update_everything(event):
 
 
 start_button.on_click(update_everything)
+
 
 template.servable()
 
