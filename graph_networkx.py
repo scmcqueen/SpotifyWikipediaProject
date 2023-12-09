@@ -45,7 +45,7 @@ def save_cache(cache_dict,CACHE_FILENAME):
     fw.write(dumped_json_cache)
     fw.close() 
 
-
+############# Spotify API Parsing  ############# 
 def parse_playlist(api_output):
     '''
     Parses the api output of a spotify api playlist tracks call. 
@@ -75,11 +75,24 @@ def parse_playlist(api_output):
                         'api_link':api_link}
     return output
 
-
-
 def get_artist_genres(link,headers):
+   '''
+   Makes a request based on an artist's link and returns a dictionary with additional 
+   info about that artist. 
+
+   PARAMETERS
+   ----------
+   link: str
+        spotify api link to get information about an artist
+    headers: dict
+        api headers to use in the request, should be a dict with a bearer token.
+
+   RETURNS
+   -------
+   dict
+        a dictionary with the artist's genres, image information, and popularity
+   '''
    info = requests.get(link,headers=headers).json()
-   #print(info)
    genres = info['genres']
    img_info = info['images']
    popularity = info['popularity']
@@ -88,10 +101,7 @@ def get_artist_genres(link,headers):
            'popularity':popularity}
 
 
-
-
 ############# Now I'm looking at wikipedia ###################
-#https://enterprise.wikimedia.com/docs/on-demand/#article-lookup
 
 
 def wikimedia_request(wikimedia_token,artist):
