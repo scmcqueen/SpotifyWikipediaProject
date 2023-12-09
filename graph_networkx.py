@@ -100,6 +100,25 @@ def get_artist_genres(link,headers):
            'img_info':img_info,
            'popularity':popularity}
 
+def get_title_info(headers,playlist_id):
+    '''
+    Makes a spotify api request to get the title and author of a playlist in a pretty string format.
+
+    PARAMETERS
+    ----------
+    headers: dict
+        api headers to use in the request, should be a dict with a bearer token.
+    playlist_id: str
+        the spotify unique id for a playlist
+
+    RETURNS
+    -------
+    str
+        the playlist name and ownner in the format "<playlist name> by <playlist author>"
+    '''
+    info = requests.get(f"https://api.spotify.com/v1/playlists/{playlist_id}",headers=headers).json()
+    return(f"{info['name']} by {info['owner']['display_name']}")
+
 ############# Wikimedia API Parsing  ############# 
 
 def wikimedia_request(wikimedia_token,artist):
@@ -121,7 +140,6 @@ def wikimedia_request(wikimedia_token,artist):
     wiki_headers = {"Authorization": f'Bearer {wikimedia_token}'}
     artist_new = artist.replace(' ',"_")
     return requests.get(f'https://api.enterprise.wikimedia.com/v2/structured-contents/{artist_new}?fields=in_language&fields=infobox',headers=wiki_headers)
-
 
 def parse_wikimedia_request(name, wiki_result, artists_full_info): ###SKYELER DOUBLE CHECK HOW THIS FUNCTION WORKS
     '''
@@ -186,24 +204,7 @@ def parse_wikimedia_request(name, wiki_result, artists_full_info): ###SKYELER DO
     artists_full_info['instruments']=instruments
     artists_full_info['occupations']=occupation
 
-def get_title_info(headers,playlist_id):
-    '''
-    Makes an api request to get the title and author of a playlist in a pretty string format.
-
-    PARAMETERS
-    ----------
-    headers: dict
-        api headers to use in the request, should be a dict with a bearer token.
-    playlist_id: str
-        the spotify unique id for a playlist
-
-    RETURNS
-    -------
-    str
-        the playlist name and ownner in the format "<playlist name> by <playlist author>"
-    '''
-    info = requests.get(f"https://api.spotify.com/v1/playlists/{playlist_id}",headers=headers).json()
-    return(f"{info['name']} by {info['owner']['display_name']}")
+############# Put it all together to create a graph  ############# 
 
 def createMyGraph(wikimedia_token,spotify_token,playlist_id="0Hm1tCeFv45CJkNeIAtrfF"):
 
