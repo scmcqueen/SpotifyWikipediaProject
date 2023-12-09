@@ -55,9 +55,18 @@ sidecol.append(spotify_username_password_input)
 sidecol.append(start_button)
 
 sidecol.append(pn.pane.Markdown('''#### Or try one of our recommended playlists!
-https://open.spotify.com/playlist/0UNIeYdHASM38T47qjz9bQ?si=O6VNvV3yRlibUvEq9SczqQ&pt=a41b9d34793c945e2d32981e1c92a945&pi=u-mmMmyTYyTSKF                        
-
+**Top 100 Artists Playlist**
+https://open.spotify.com/playlist/0Hm1tCeFv45CJkNeIAtrfF?si=Tg1QrqCwTcqWyIVcIAPjsA&pi=u-2p99hT2OTseU
+**Dana's Emo Music**
 https://open.spotify.com/playlist/1wzmHWDXTgPQjSzaAMYSr8?si=nAfKLU8XQqyul7GhLw69fw&pt=53a8902253dfa4d789c3d87d6173779c
+**The Barbie Soundtrack (in order)**
+https://open.spotify.com/playlist/4SS7ARjCKiJmtqthv54dAG?si=agryaLlaRMWVSaO0EBCLWg&pi=u-UAcbEZPCQ_S0
+**Veganism by Olivia**
+https://open.spotify.com/playlist/5kyhuJwtqAlkWCdPiQ1Ltn?si=qn_uKfklQu-qidJX5oZpEA&pi=u-CCYhGueuQQSG      
+**Skyeler's Top Songs of 2023**
+https://open.spotify.com/playlist/37i9dQZF1Fa3HdyrNWa6vZ?si=oCJikSSSSkuLqPnNWt1A-g&pi=u-1y-ex8nkT9il  
+**Samuel's Top Songs of 2023**
+https://open.spotify.com/playlist/37i9dQZF1FacGl8FhVmMo5?si=r7i5rTpgQB606g2T4TXuaQ&pi=u-Vl-ofu93TXmp                
                                 
                                 ''',width=300))
 
