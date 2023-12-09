@@ -198,7 +198,7 @@ def parse_wikimedia_request(name, wiki_result, artists_full_info): ###SKYELER DO
             if died ==None:
                 died = 'alive'
     except:
-        print('----------Nah')
+        print(f'----------No Wikipedia Page available for {name}')
     artists_full_info['birth']=birth
     artists_full_info['died']=died
     artists_full_info['instruments']=instruments
