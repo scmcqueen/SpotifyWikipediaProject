@@ -187,6 +187,21 @@ def parse_wikimedia_request(name, wiki_result, artists_full_info): ###SKYELER DO
     artists_full_info['occupations']=occupation
 
 def get_title_info(headers,playlist_id):
+    '''
+    Makes an api request to get the title and author of a playlist in a pretty string format.
+
+    PARAMETERS
+    ----------
+    headers: dict
+        api headers to use in the request, should be a dict with a bearer token.
+    playlist_id: str
+        the spotify unique id for a playlist
+
+    RETURNS
+    -------
+    str
+        the playlist name and ownner in the format "<playlist name> by <playlist author>"
+    '''
     info = requests.get(f"https://api.spotify.com/v1/playlists/{playlist_id}",headers=headers).json()
     return(f"{info['name']} by {info['owner']['display_name']}")
 
