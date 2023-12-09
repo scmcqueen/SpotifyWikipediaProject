@@ -100,14 +100,27 @@ def get_artist_genres(link,headers):
            'img_info':img_info,
            'popularity':popularity}
 
-
-############# Now I'm looking at wikipedia ###################
-
+############# Wikimedia API Parsing  ############# 
 
 def wikimedia_request(wikimedia_token,artist):
-        wiki_headers = {"Authorization": f'Bearer {wikimedia_token}'}
-        artist_new = artist.replace(' ',"_")
-        return requests.get(f'https://api.enterprise.wikimedia.com/v2/structured-contents/{artist_new}?fields=in_language&fields=infobox',headers=wiki_headers)
+    '''
+    create a wikimedia request of a specific artist's infobox and return the request result object. 
+
+    PARAMETERS
+    ----------
+    wikimedia_token: str
+        access token to make wikimedia request
+    artist: str
+        name of the artist you're looking up 
+
+    RETURNS
+    -------
+    request result object
+        The result of the api request to get the artist's infobox
+    '''
+    wiki_headers = {"Authorization": f'Bearer {wikimedia_token}'}
+    artist_new = artist.replace(' ',"_")
+    return requests.get(f'https://api.enterprise.wikimedia.com/v2/structured-contents/{artist_new}?fields=in_language&fields=infobox',headers=wiki_headers)
 
 
 def parse_wikimedia_request(name, wiki_result, artists_full_info):
