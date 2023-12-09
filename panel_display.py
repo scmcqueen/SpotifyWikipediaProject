@@ -59,7 +59,7 @@ sidecol.append(pn.pane.Markdown('''#### Or try one of our recommended playlists!
 https://open.spotify.com/playlist/0Hm1tCeFv45CJkNeIAtrfF?si=Tg1QrqCwTcqWyIVcIAPjsA&pi=u-2p99hT2OTseU
 **Dana's Emo Music**
 https://open.spotify.com/playlist/1wzmHWDXTgPQjSzaAMYSr8?si=nAfKLU8XQqyul7GhLw69fw&pt=53a8902253dfa4d789c3d87d6173779c
-**The Barbie Soundtrack (in order)**
+**The Barbie Soundtrack**
 https://open.spotify.com/playlist/4SS7ARjCKiJmtqthv54dAG?si=agryaLlaRMWVSaO0EBCLWg&pi=u-UAcbEZPCQ_S0
 **Veganism by Olivia**
 https://open.spotify.com/playlist/5kyhuJwtqAlkWCdPiQ1Ltn?si=qn_uKfklQu-qidJX5oZpEA&pi=u-CCYhGueuQQSG      
