@@ -123,15 +123,17 @@ def wikimedia_request(wikimedia_token,artist):
     return requests.get(f'https://api.enterprise.wikimedia.com/v2/structured-contents/{artist_new}?fields=in_language&fields=infobox',headers=wiki_headers)
 
 
-def parse_wikimedia_request(name, wiki_result, artists_full_info):
+def parse_wikimedia_request(name, wiki_result, artists_full_info): ###SKYELER DOUBLE CHECK HOW THIS FUNCTION WORKS
     '''
+    Parses wikimedia infobox request api output and adds the new information to 
+    the artists_full_info dictionary.
 
     PARAMETERS
     ----------
     name: str
       The name of the artist that was searched
     wiki_result: request
-      This is
+      This is the output of the wikimedia_request function, a request result object
     artists_full_info: dict
       The dictionary of artists where the key is their name (string) and the value
       is a dictionary with information about them. 
@@ -148,7 +150,6 @@ def parse_wikimedia_request(name, wiki_result, artists_full_info):
     died = None
     occupation = []
     instruments = []
-    #print(name)
     try:
         for num in range(len(temp_json)):
             if 'in_language' in temp_json[num].keys():
