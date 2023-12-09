@@ -43,7 +43,7 @@ welcome_text = pn.pane.Markdown(
 
 
 #left hand widgets
-start_button = pn.widgets.Button(name='Start',button_type='primary')
+start_button = pn.widgets.Button(name='Start',button_type='success')
 playlist_input= pn.widgets.TextInput(name='Playlist link:', placeholder='Skyeler')
 wikimedia_username_password_input = pn.widgets.TextInput(name='Wikimedia username & password:', placeholder='username,password')
 spotify_username_password_input = pn.widgets.TextInput(name='Spotify id & secret:', placeholder='id,secret')
@@ -72,8 +72,9 @@ https://open.spotify.com/playlist/37i9dQZF1FacGl8FhVmMo5?si=r7i5rTpgQB606g2T4TXu
 
 
 template = pn.template.BootstrapTemplate(
-    title='507 Dashboard',
-    sidebar=sidecol
+    title='Spotify + Wikipedia Playlist Exploration',
+    sidebar=sidecol,
+    header_background =  "#065143"
 )
 
 #define function to bind
@@ -129,7 +130,7 @@ autocomplete_lookup = pn.widgets.AutocompleteInput(
     name='Look up an artist or genre:', options=(artists_list+genres_list),
     case_sensitive=False, search_strategy='includes',
     placeholder=popular_artists[0])
-search_button = pn.widgets.Button(name='Search',button_type='primary')
+search_button = pn.widgets.Button(name='Search',button_type='success')
 
 
 lookup_artist_col.append(autocomplete_lookup)
@@ -192,7 +193,7 @@ end_lookup = pn.widgets.AutocompleteInput(
     name='Ending point:', options=(artists_list+genres_list),
     case_sensitive=False, search_strategy='includes',
     placeholder='Z')
-path_button = pn.widgets.Button(name='Find path',button_type='primary')
+path_button = pn.widgets.Button(name='Find path',button_type='success')
 
 path_graph = pn.panel(alt.Chart(pd.DataFrame([''],columns=['Waiting for data...'])).encode(x='Waiting for data...:Q').mark_circle().properties(width=400)) #blank chart
 
@@ -220,7 +221,7 @@ popularity_filter_col = pn.Column(pn.pane.Markdown(''' ### Filter artists by pop
 based on Spotify's built-in popularity metric
                                                 '''),width=600)
 enter_popularity = pn.widgets.EditableIntSlider(name='Popularity',start=0,end=100)
-pop_button = pn.widgets.Button(name='Filter!',button_type='primary')
+pop_button = pn.widgets.Button(name='Filter!',button_type='success')
 temp = ntf.filter_popularity(graph,65,lookup_dict) # -- keeps throiwng error?
 popularity_graph = pn.panel(ntf.draw_network(ntf.filter_popularity(graph,50,lookup_dict),size_v=400).interactive().properties(title=f"Artists with a popularity of 50 or higher",width=400,height=400))
 
@@ -239,7 +240,7 @@ where_ya_from = pn.Column(pn.pane.Markdown(''' ### Where did you come from?
 Or when did you come from? Try inputting a place, year, or month to see where and when your artists were born.
 ''',width=600))
 year_or_place_input = pn.widgets.TextInput(name='Enter a place or year:',placeholder='California')
-year_or_place_button = pn.widgets.Button(name='Search',button_type='primary')
+year_or_place_button = pn.widgets.Button(name='Search',button_type='success')
 year_or_place_graph = pn.panel(ntf.draw_network(ntf.search_from(graph,'california',lookup_dict)).interactive().properties(title='Artists who are California girls at heart <3',width=400,height=400))
 def search_year_or_place(event):
     term = year_or_place_input.value
@@ -262,7 +263,7 @@ job_list = ntf.get_all_occupations(lookup_dict)
 
 checkbutton_inst = pn.widgets.RadioButtonGroup(name='Check Button Group', value='all', options=(instrument_list+['all']),orientation='vertical')
 checkbutton_occ = pn.widgets.RadioButtonGroup(name='Check Button Group', options=(job_list+['all']), value='a;;', orientation='vertical')
-multi_go =pn.widgets.Button(name="Let's go!",button_type='primary')
+multi_go =pn.widgets.Button(name="Let's go!",button_type='success')
 
 selection_col1 = pn.Column(multi_go)
 selection_col1.append(pn.pane.Markdown('''###### Instruments '''))
