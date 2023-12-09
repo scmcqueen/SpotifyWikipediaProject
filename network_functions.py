@@ -40,9 +40,8 @@ def draw_network(graph,labels=True,size_v=300):        #labels is true or false
     nodelayer = nxa.draw_networkx_nodes(graph,pos=position)
     edgeslayer = nxa.draw_networkx_edges(graph,pos=position,width=5)
     n1=nodelayer.mark_circle(size=size_v,opacity=1).encode(color=alt.Color('type:N',scale=alt.Scale(range=["#CE1483",'#3772FF'])),tooltip=['id:N'])
-    text = nodelayer.mark_text(color='black').encode(
-        text='id:N',
-        dx=3
+    text = nodelayer.mark_text(color='black',dx=50,fontSize=13).encode(
+        text='id:N'
         )
     if len(graph.nodes)<21:
         return(edgeslayer+n1+text)
