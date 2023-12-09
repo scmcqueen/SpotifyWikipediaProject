@@ -247,8 +247,8 @@ occ_and_inst = pn.Row()
 instrument_list = ntf.get_all_instruments(lookup_dict)
 job_list = ntf.get_all_occupations(lookup_dict)
 
-checkbutton_inst = pn.widgets.RadioButtonGroup(name='Check Button Group', value=instrument_list[0], options=(instrument_list+['all']),orientation='vertical')
-checkbutton_occ = pn.widgets.RadioButtonGroup(name='Check Button Group', options=(job_list+['all']), value=job_list[0], orientation='vertical')
+checkbutton_inst = pn.widgets.RadioButtonGroup(name='Check Button Group', value='all', options=(instrument_list+['all']),orientation='vertical')
+checkbutton_occ = pn.widgets.RadioButtonGroup(name='Check Button Group', options=(job_list+['all']), value='a;;', orientation='vertical')
 multi_go =pn.widgets.Button(name="Let's go!",button_type='primary')
 
 selection_col1 = pn.Column(multi_go)
@@ -258,7 +258,7 @@ selection_col2 = pn.Column(pn.pane.Markdown('''###### Occupations '''))
 selection_col2.append(checkbutton_occ)
 
 
-multiselect_graph_pane = pn.panel(ntf.draw_network(ntf.search_instruments(ntf.search_occupations(graph,job_list[0],lookup_dict),instrument_list[0],lookup_dict)).properties(title=f'Artists who also {job_list[0]} and play {instrument_list[0]}',width=400,height=400).interactive())
+multiselect_graph_pane = pn.panel(ntf.draw_network(graph).properties(title=f'Click the buttons to filter this graph!',width=400,height=400).interactive())
 
 def multiselect_selection(event):
     newinst = checkbutton_inst.value
@@ -324,8 +324,17 @@ def update_everything(event):
 
     rerun_count+=1
     
-    link = ntf.parse_playlist(playlist_input.value) ###NEED TO PARSE THE LINK
-    new_info = gnx.createMyGraph(link) #eventually should have info with the input
+    link = ntf.parse_playlist(playlist_input.value) 
+
+    wikitoken = None
+    spotifytoken = None
+    try:
+        new_info = gnx.createMyGraph(playlist_id=link,wikimedia_token=wikitoken,spotify_token=spotifytoken) 
+    except:
+        print("generating new token")
+        wikitoken = ntf.get_wikimedia_access_token()
+        spotifytoken = ntf.get_spotify_token()
+        new_info = gnx.createMyGraph(playlist_id=link,wikimedia_token=wikitoken,spotify_token=spotifytoken) 
     graph = new_info[0]
     lookup_dict = new_info[1]
     title = new_info[2]
@@ -394,14 +403,14 @@ def update_everything(event):
     instrument_list = ntf.get_all_instruments(lookup_dict)
     job_list = ntf.get_all_occupations(lookup_dict)
 
-    checkbutton_inst.value = instrument_list[0]
     checkbutton_inst.options = (instrument_list+['all'])
-
-    checkbutton_occ.value=job_list[0]
+    checkbutton_inst.value = 'all'
+    
     checkbutton_occ.options = (job_list+['all'])
+    checkbutton_occ.value='all'
+    
 
-    multiselect_graph_pane.object = ntf.draw_network(ntf.search_instruments(ntf.search_occupations(graph,job_list[0],lookup_dict),instrument_list[0],lookup_dict)).properties(title=f'Artists who also {job_list[0]} and play {instrument_list[0]}',width=400,height=400).interactive()
-
+    multiselect_graph_pane.object = ntf.draw_network(graph).properties(title=f'Click the buttons to filter this graph!',width=400,height=400).interactive()
     #update top genre
     genre_chart.object= ntf.top_genres_bar(graph).properties(title=f"Top Genres in {title}",height=450,width=400).configure_title(fontSize=24)
     print(graph)

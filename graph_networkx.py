@@ -158,10 +158,10 @@ def get_title_info(headers,playlist_id):
     info = requests.get(f"https://api.spotify.com/v1/playlists/{playlist_id}",headers=headers).json()
     return(f"{info['name']} by {info['owner']['display_name']}")
 
-def createMyGraph(playlist_id="0Hm1tCeFv45CJkNeIAtrfF"):
-    token ="BQBgIcKxUA5AL3XOVCsKz19AmDcN3lMfAo28g1L9fXQjiSZN3jqbbkE25tHLbse-Q1VY-8y2vJxUCNVnCFm4YTRYgjM8ASgD3P4EZMp4MaQsbtOMZnA"
+def createMyGraph(wikimedia_token,spotify_token,playlist_id="0Hm1tCeFv45CJkNeIAtrfF"):
+    #token ="BQBgIcKxUA5AL3XOVCsKz19AmDcN3lMfAo28g1L9fXQjiSZN3jqbbkE25tHLbse-Q1VY-8y2vJxUCNVnCFm4YTRYgjM8ASgD3P4EZMp4MaQsbtOMZnA"
 
-    headers={"Authorization": f"Bearer {token}"}
+    headers={"Authorization": f"Bearer {spotify_token}"}
 
     CACHE_FILENAME = "spotify_wikipedia.json" #step 7
 
@@ -176,7 +176,7 @@ def createMyGraph(playlist_id="0Hm1tCeFv45CJkNeIAtrfF"):
     test_link = "https://api.spotify.com/v1/artists/07YZf4WDAMNwqr4jfgOZ8y"
     get_artist_genres(test_link,headers)
 
-    wikimedia_token ="eyJraWQiOiJzeVNnS1JaZWdwcDFlSGZEYnlsR2YrTnBjVmVXUDZJNGJlSFpOWjBDZVdrPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIxNGQ2MGMxOC04MGQ2LTQ5NzAtYTA4Mi0yYTY4MTRkMzFjZDkiLCJjb2duaXRvOmdyb3VwcyI6WyJncm91cF8xIl0sImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy1lYXN0LTEuYW1hem9uYXdzLmNvbVwvdXMtZWFzdC0xX0tiNW5ZZDN6dSIsImNsaWVudF9pZCI6IjY0MXU0aTdncHR1ZmZzc2w0bTlvYXR2NHU5Iiwib3JpZ2luX2p0aSI6ImEwNjBkMjAzLWYzYzAtNDk2Mi05NmI3LWNiZGQwMDk1YjIyNiIsImV2ZW50X2lkIjoiOWMzNGI5MjUtNDYxOS00OTkwLTlhODYtY2M1YjY5NWVmMzRjIiwidG9rZW5fdXNlIjoiYWNjZXNzIiwic2NvcGUiOiJhd3MuY29nbml0by5zaWduaW4udXNlci5hZG1pbiIsImF1dGhfdGltZSI6MTcwMjA2NzcxNSwiZXhwIjoxNzAyMTU0MTE1LCJpYXQiOjE3MDIwNjc3MTUsImp0aSI6ImUxYzIxMDE0LTc5MDMtNGI3OC04N2NmLThhZDVkMzgyYzU3YSIsInVzZXJuYW1lIjoic2t5ZWxlcmJlYXIifQ.a_ko5pPnA-zUGlUbzZmLVCRL4IdE6ePO5F5VdFJF1pNwlhKJDm-DQIazTS-qbT91b1Hp88cltu7O7J7c8c8HYTu6D5KUe8sPtQ1rDxLSYng08-oERaHE17yuDLxObwVVpW6RmdF2ca_2HRosoY9DAyFKAViGrEezo9bfKvuRRTTgQJexGTmDC9gSRGPzs0cwuIQ2n_IlQjYhRvTBjAv5YEyQ0djTsbYvubBzTzigMwE8J_3VGKmAYlUhIvMgtu3swELz_bMU0EzyLzAceSDxSzLywZBS60tFWOaBAIjN1Nb_dBNflxQM4_vPrZJVSo1sW_XKXRaODdV8RySdS26RGA"
+   # wikimedia_token ="eyJraWQiOiJzeVNnS1JaZWdwcDFlSGZEYnlsR2YrTnBjVmVXUDZJNGJlSFpOWjBDZVdrPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIxNGQ2MGMxOC04MGQ2LTQ5NzAtYTA4Mi0yYTY4MTRkMzFjZDkiLCJjb2duaXRvOmdyb3VwcyI6WyJncm91cF8xIl0sImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy1lYXN0LTEuYW1hem9uYXdzLmNvbVwvdXMtZWFzdC0xX0tiNW5ZZDN6dSIsImNsaWVudF9pZCI6IjY0MXU0aTdncHR1ZmZzc2w0bTlvYXR2NHU5Iiwib3JpZ2luX2p0aSI6ImEwNjBkMjAzLWYzYzAtNDk2Mi05NmI3LWNiZGQwMDk1YjIyNiIsImV2ZW50X2lkIjoiOWMzNGI5MjUtNDYxOS00OTkwLTlhODYtY2M1YjY5NWVmMzRjIiwidG9rZW5fdXNlIjoiYWNjZXNzIiwic2NvcGUiOiJhd3MuY29nbml0by5zaWduaW4udXNlci5hZG1pbiIsImF1dGhfdGltZSI6MTcwMjA2NzcxNSwiZXhwIjoxNzAyMTU0MTE1LCJpYXQiOjE3MDIwNjc3MTUsImp0aSI6ImUxYzIxMDE0LTc5MDMtNGI3OC04N2NmLThhZDVkMzgyYzU3YSIsInVzZXJuYW1lIjoic2t5ZWxlcmJlYXIifQ.a_ko5pPnA-zUGlUbzZmLVCRL4IdE6ePO5F5VdFJF1pNwlhKJDm-DQIazTS-qbT91b1Hp88cltu7O7J7c8c8HYTu6D5KUe8sPtQ1rDxLSYng08-oERaHE17yuDLxObwVVpW6RmdF2ca_2HRosoY9DAyFKAViGrEezo9bfKvuRRTTgQJexGTmDC9gSRGPzs0cwuIQ2n_IlQjYhRvTBjAv5YEyQ0djTsbYvubBzTzigMwE8J_3VGKmAYlUhIvMgtu3swELz_bMU0EzyLzAceSDxSzLywZBS60tFWOaBAIjN1Nb_dBNflxQM4_vPrZJVSo1sW_XKXRaODdV8RySdS26RGA"
     wiki_headers = {"Authorization": f'Bearer {wikimedia_token}'}
 
     for celeb in parsed_100.keys():
@@ -206,20 +206,13 @@ def createMyGraph(playlist_id="0Hm1tCeFv45CJkNeIAtrfF"):
             mygraph.add_nodes_from([(gen,{'type':'genre'})])
             mygraph.nodes[gen]['type']='genre'
             mygraph.add_edge(artist,gen)
-    # print(mygraph)
-    # print("---------------")
+
     print(f'Nodes: {str(len(list(mygraph.nodes)))}')
-    # print(list(mygraph.nodes))
-    # print("---------------")
     print(f'Edges: {str(len(list(mygraph.edges)))}')
-    # #print(f"The number of vertices is: {len(mygraph.vertList)}!")
-    # print("---------------")
-    # print(mygraph.nodes['Katy Perry'])
     return([mygraph,parsed_100,title_info])
 
 
 
 if __name__ == '__main__':
-    
     
     pass
