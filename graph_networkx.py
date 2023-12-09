@@ -207,58 +207,68 @@ def parse_wikimedia_request(name, wiki_result, artists_full_info): ###SKYELER DO
 ############# Put it all together to create a graph  ############# 
 
 def createMyGraph(wikimedia_token,spotify_token,playlist_id="0Hm1tCeFv45CJkNeIAtrfF"):
+    '''
+    Run all of the api calls necessary to create a networkx graph of a given spotify playlist, 
+    a lookup dictionary with information about the artists, and a string in the format of 
+    "<Playlist name> by <playlist owner>".
 
-    headers={"Authorization": f"Bearer {spotify_token}"}
+    PARAMETERS
+    ----------
+    wikimedia_token: str
+        The token to login to the wikimedia API
+    spotify_token: str
+        The token to login to the spotify API
+    playlist_id: str
+        The spotify playlist unique id
 
-    CACHE_FILENAME = "spotify_wikipedia.json" 
+    RETURNS
+    -------
+    list: [networkx graph, dict, str]
+        The list is described in more detail above
+    '''
 
-    spotify_cache = open_cache(CACHE_FILENAME)
+    headers={"Authorization": f"Bearer {spotify_token}"} #set the spotify headers
+
+    CACHE_FILENAME = "spotify_wikipedia.json" #name of the cache
+
+    spotify_cache = open_cache(CACHE_FILENAME) #open the cache
 
     title_info = get_title_info(headers,playlist_id)
 
-    top100 = requests.get(f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks",headers=headers) 
+    top100 = requests.get(f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks",headers=headers) #get the tracks
    
-    parsed_100 = parse_playlist(top100)
+    parsed_100 = parse_playlist(top100) #parse the tracs
 
-    test_link = "https://api.spotify.com/v1/artists/07YZf4WDAMNwqr4jfgOZ8y"
-    get_artist_genres(test_link,headers)
+    wiki_headers = {"Authorization": f'Bearer {wikimedia_token}'} #set the wikimedia headers
 
-    wiki_headers = {"Authorization": f'Bearer {wikimedia_token}'}
-
-    for celeb in parsed_100.keys():
+    for celeb in parsed_100.keys(): # parse each artist in the list if it isn't in the cache
         if celeb not in spotify_cache.keys():
             more_deets = get_artist_genres(parsed_100[celeb]['api_link'],headers)
-
             wiki_deets = wikimedia_request(wikimedia_token,celeb)
             parse_wikimedia_request(celeb,wiki_deets,more_deets)
-            
             for item in more_deets.keys():
                 parsed_100[celeb][item]=more_deets[item]
-            
             spotify_cache[celeb]=parsed_100[celeb]
         else: 
             parsed_100[celeb] = spotify_cache[celeb]
-    save_cache(spotify_cache,CACHE_FILENAME)
+
+    save_cache(spotify_cache,CACHE_FILENAME) #save the cache
     
-    mygraph = nx.Graph()
+    mygraph = nx.Graph() #initialize the graph object
 
-    for artist in parsed_100:
+    for artist in parsed_100: #add each artist to graph
         parsed_100[artist]['type']='artist'
-
         mygraph.add_nodes_from([(artist,{'type':'artist'})])
-
-
-        for gen in parsed_100[artist]['genres']:
+        for gen in parsed_100[artist]['genres']: #add each genre to the graph
             mygraph.add_nodes_from([(gen,{'type':'genre'})])
             mygraph.nodes[gen]['type']='genre'
             mygraph.add_edge(artist,gen)
 
     print(f'Nodes: {str(len(list(mygraph.nodes)))}')
     print(f'Edges: {str(len(list(mygraph.edges)))}')
-    return([mygraph,parsed_100,title_info])
-
+    return([mygraph,parsed_100,title_info]) #return statment
 
 
 if __name__ == '__main__':
-    
+    #used this to test specific functions
     pass
