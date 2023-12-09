@@ -45,9 +45,13 @@ welcome_text = pn.pane.Markdown(
 #left hand widgets
 start_button = pn.widgets.Button(name='Start',button_type='primary')
 playlist_input= pn.widgets.TextInput(name='Playlist link:', placeholder='Skyeler')
+wikimedia_username_password_input = pn.widgets.TextInput(name='Wikimedia username & password:', placeholder='username,password')
+spotify_username_password_input = pn.widgets.TextInput(name='Spotify id & secret:', placeholder='id,secret')
 
 sidecol.append(welcome_text)
 sidecol.append(playlist_input)
+sidecol.append(wikimedia_username_password_input)
+sidecol.append(spotify_username_password_input)
 sidecol.append(start_button)
 
 sidecol.append(pn.pane.Markdown('''#### Or try one of our recommended playlists!
@@ -322,6 +326,9 @@ rerun_count =0
 def update_everything(event):
     global graph, lookup_dict, title,artist_genres,artists_list,genres_list,  rerun_count
 
+    wiki_cred = wikimedia_username_password_input.value.split(',')
+    spot_cred = spotify_username_password_input.value.split(',')
+
     rerun_count+=1
     
     link = ntf.parse_playlist(playlist_input.value) 
@@ -332,8 +339,8 @@ def update_everything(event):
         new_info = gnx.createMyGraph(playlist_id=link,wikimedia_token=wikitoken,spotify_token=spotifytoken) 
     except:
         print("generating new token")
-        wikitoken = ntf.get_wikimedia_access_token()
-        spotifytoken = ntf.get_spotify_token()
+        wikitoken = ntf.get_wikimedia_access_token(wiki_cred[0],wiki_cred[1])
+        spotifytoken = ntf.get_spotify_token(spot_cred[0],spot_cred[1])
         new_info = gnx.createMyGraph(playlist_id=link,wikimedia_token=wikitoken,spotify_token=spotifytoken) 
     graph = new_info[0]
     lookup_dict = new_info[1]

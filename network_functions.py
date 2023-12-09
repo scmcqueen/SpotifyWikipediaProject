@@ -38,9 +38,9 @@ def draw_network(graph,labels=True,size_v=300):        #labels is true or false
     position = nx.spring_layout(graph)
 
     nodelayer = nxa.draw_networkx_nodes(graph,pos=position)
-    edgeslayer = nxa.draw_networkx_edges(graph,pos=position,width=5)
+    edgeslayer = nxa.draw_networkx_edges(graph,pos=position,width=5,edge_color="#2CDA9D")
     n1=nodelayer.mark_circle(size=size_v,opacity=1).encode(color=alt.Color('type:N',scale=alt.Scale(range=["#CE1483",'#3772FF'])),tooltip=['id:N'])
-    text = nodelayer.mark_text(color='black',dx=50,fontSize=13).encode(
+    text = nodelayer.mark_text(color='black',dx=50,fontSize=13,fontWeight="bold").encode(
         text='id:N'
         )
     if len(graph.nodes)<21:
