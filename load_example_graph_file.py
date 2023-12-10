@@ -33,7 +33,7 @@ def load_example_graph(graph_name='test_graph_data',dict_name='test_lookup_data'
     dict_file.close()
     return [nx.node_link_graph(graph_dict),lookup,name]
 
-example = ntf.load_example_graph()
+example = load_example_graph()
 print(f'Here is the example graph: {example[0]}')
 print(f'Here are the example nodes: {example[0].nodes}')
 print(f'Here is an example node: {example[0].nodes["Maisie Peters"]}')
