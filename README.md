@@ -1,2 +1,9 @@
-# SpotifyWikipediaProject
-Let's query the top 100 Spotify artists and filter them based on some demographic info from Wikipedia 
+# Spotify & Wikipedia Project
+Let's query the artists from a Spotify playlist and filter them based on Wikipedia demographic information.
+
+
+## Required Packages
+
+## Data Structures
+
+## Running this Code 
