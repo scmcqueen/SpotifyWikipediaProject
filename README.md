@@ -37,3 +37,17 @@ We use a networkx node link graph and a lookup dictionary to filter the artists 
 
 
 ## Running this Code 
+
+1. Please download or clone this repo. The png files are non essential.
+2. Ensure you have all the necessary packages.
+3. Open a terminal window and cd to the where this code is saved.
+4. Run this command "panel serve panel_display.py --autoreload --show" and click allow if a pop-up appears. This should open a window in your web browser (chrome works best).
+5. Explore the preloaded data! 
+    1. **Note for 507 grading team:** If you want to load new data input your Wikipedia API username and password in the format 'username,password' and your Spotify id & secret in the format 'id,secret' along with a Spotify playlist link. **My username,password and id,secret are in my Final Project Report.**
+    2. Click Start to load your data! It may take a minute to load the information (my cache mostly has indie music).
+6. If you have any questions, please refer to the videos. 
+
+## Next steps 
+- Write a git.ignore file so that png files are not synced.
+- Find a better way to search for wikipedia pages - for example "https://en.wikipedia.org/wiki/Gunna" does not take you to the artist Gunna's page, even though he has one.
+- Make the recommended playlists section more aesthetically pleasing.
