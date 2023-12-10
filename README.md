@@ -4,20 +4,31 @@
 Let's query the artists from a Spotify playlist and filter them based on Wikipedia demographic information.
 
 
-## Required Packages
+## Required Python Packages
 
-import panel as pn
-import pandas as pd
-import altair as alt
-import graph_networkx as gnx
-import network_functions as ntf
-import json
-import requests
-import json
-import networkx as nx
-import urllib.request 
-import nx_altair as nxa
-import re
+- panel
+
+- pandas
+
+- altair 
+
+- graph_networkx 
+
+- network_functions 
+
+- json
+
+- requests
+
+- json
+
+- networkx 
+
+- urllib.request 
+
+- nx_altair
+
+- re
 
 ## Data Structures
 
