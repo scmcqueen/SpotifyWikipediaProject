@@ -64,4 +64,4 @@ We use a networkx node link graph and a lookup dictionary to filter the artists 
 - Find a better way to search for wikipedia pages - for example "https://en.wikipedia.org/wiki/Gunna" does not take you to the artist Gunna's page, even though he has one.
 - Make the recommended playlists section more aesthetically pleasing.
 - Host this on my website!
-- Fix image on top row - sometimes cuts into second row
+- Fix image on top row - sometimes cuts into second row if image size is too large
